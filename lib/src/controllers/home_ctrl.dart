@@ -1544,7 +1544,6 @@
 //   List<Map<String, String>> get videos => _videos;
 // }
 
-
 // import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart' as Geolocator;
 
@@ -1636,7 +1635,7 @@ class HomeController extends ChangeNotifier {
   @override
   void dispose() {
     _deboucerSearchCompras?.cancel();
-   
+
     super.dispose();
   }
 
@@ -1813,11 +1812,65 @@ class HomeController extends ChangeNotifier {
     };
   }
 
+// //============================================================ VALIDA INICIA TURNO QR ===========================//
+
+//   Future<void> validaTurnoQR(BuildContext context) async {
+//     final serviceSocket = context.read<SocketService>();
+//      final btnCtrl = context.read<BotonTurnoController>();
+//     final infoUser = await Auth.instance.getSession();
+
+//     final _pyloadDataIniciaTurno = {
+//       "tabla": "registro", // info Quemada
+//       "rucempresa": infoUser!.rucempresa, // dato del login
+//       "rol": infoUser.rol, // dato del login
+//       "regId": "", // va vacio
+//       "regCodigo": infoUser.id, // _textoCodigAccesoTurno, // leer del qr
+//       "regDocumento": "", // va vacio
+//       "regNombres": "", // va vacio
+//       "regPuesto": "", // va vacio
+//       'regTerminosCondiciones': _terminosCondiciones,
+//       "qrcliente":
+//           _infoQRTurno, //SE AGREGA LA INFORMACION QUE SE ESCANE A QR EN LA NUEVA FORMA DEINICIAAR TURNO
+//       "regCoordenadas": {
+//         // tomar coordenadas
+//         "latitud": position!.latitude,
+//         "longitud": position!.longitude,
+//       },
+//       "regRegistro": "CÓDIGO",
+//       "regDispositivo": _tipoDispositivo, // tomar coordenadas
+//       "regEstadoIngreso": "INICIADA", // INICIADA O FINALIZADA
+//       "regEmpresa": infoUser.rucempresa, // dato del login
+//       "regUser": infoUser.usuario, // dato del login
+//       "regFecReg": "", // va vacio
+//       "Todos": "" // va vacio
+//     };
+//     serviceSocket.socket?.emit('client:guardarData', _pyloadDataIniciaTurno);
+//     serviceSocket.socket?.on('server:guardadoExitoso', (data) async {
+//       if (data['tabla'] == 'registro' && data['regUser'] ==  infoUser.usuario &&   data['regEmpresa'] ==  infoUser.rucempresa) {
+//         if (data['regCodigo'] == infoUser.id.toString()) {
+//           //====================================//
+//           await Auth.instance.saveIdRegistro('${data['regId']}');
+
+//           final datosLogin = {
+//             "turno": true,
+//             "user": data['regDocumento'],
+//           };
+
+//           await Auth.instance.saveTurnoSessionUser(datosLogin);
+//           //========INICIO TURNO DE NUEVA NAMERA======//
+//           btnCtrl.setTurnoBTN(true);
+//           btnCtrl.setTurnoBTN(true);
+//           setBotonTurno(true);
+//           //====================================//
+//         }
+//       }
+//     });
+//   }
 //============================================================ VALIDA INICIA TURNO QR ===========================//
 
   Future<void> validaTurnoQR(BuildContext context) async {
     final serviceSocket = context.read<SocketService>();
-     final btnCtrl = context.read<BotonTurnoController>();
+    final btnCtrl = context.read<BotonTurnoController>();
     final infoUser = await Auth.instance.getSession();
 
     final _pyloadDataIniciaTurno = {
@@ -1847,8 +1900,15 @@ class HomeController extends ChangeNotifier {
     };
     serviceSocket.socket?.emit('client:guardarData', _pyloadDataIniciaTurno);
     serviceSocket.socket?.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'registro' && data['regUser'] ==  infoUser.usuario &&   data['regEmpresa'] ==  infoUser.rucempresa) {
+      if (data['tabla'] == 'registro' &&
+          data['regUser'] == infoUser.usuario &&
+          data['regEmpresa'] == infoUser.rucempresa) {
         if (data['regCodigo'] == infoUser.id.toString()) {
+          //========INICIO TURNO DE NUEVA NAMERA======//
+          btnCtrl.setTurnoBTN(true);
+          // btnCtrl.setTurnoBTN(true);
+          // setBotonTurno(true);
+          //====================================//
           //====================================//
           await Auth.instance.saveIdRegistro('${data['regId']}');
 
@@ -1856,13 +1916,17 @@ class HomeController extends ChangeNotifier {
             "turno": true,
             "user": data['regDocumento'],
           };
-
+          // //========INICIO TURNO DE NUEVA NAMERA======//
+          // btnCtrl.setTurnoBTN(true);
+          // // btnCtrl.setTurnoBTN(true);
+          // // setBotonTurno(true);
+          // //====================================//
           await Auth.instance.saveTurnoSessionUser(datosLogin);
-          //========INICIO TURNO DE NUEVA NAMERA======//
-          btnCtrl.setTurnoBTN(true);
-          btnCtrl.setTurnoBTN(true);
-          setBotonTurno(true);
-          //====================================//
+          // //========INICIO TURNO DE NUEVA NAMERA======//
+          // btnCtrl.setTurnoBTN(true);
+          // // btnCtrl.setTurnoBTN(true);
+          // // setBotonTurno(true);
+          // //====================================//
         }
       }
     });
@@ -2006,41 +2070,39 @@ class HomeController extends ChangeNotifier {
   Future buscaNotificacionesPush(String? _search) async {
     final dataUser = await Auth.instance.getSession();
 
-    if (dataUser!=null) {
-       final response = await _api.getAllNotificacionesPush(
-      token: '${dataUser.token}',
-    );
-    if (response != null) {
+    if (dataUser != null) {
+      final response = await _api.getAllNotificacionesPush(
+        token: '${dataUser.token}',
+      );
+      if (response != null) {
 // print('response notificacion 1 si: ${response['data']}');
-      if (response['data'].length > 0) {
-        _errorNotificacionesPush = true;
+        if (response['data'].length > 0) {
+          _errorNotificacionesPush = true;
 
-        for (var item in response['data']['notificacion1']) {
-          if (item['notTipo'] == 'ACTIVIDAD') {
-            setIdsNotificacionesActividades(item['notId']);
+          for (var item in response['data']['notificacion1']) {
+            if (item['notTipo'] == 'ACTIVIDAD') {
+              setIdsNotificacionesActividades(item['notId']);
+            }
           }
-        }
 
-        for (var item in response['data']['notificacion1']) {
-          if (item['notEmpresa'] == dataUser.rucempresa) {
-            setInfoBusquedaNotificacionesPush(
-                response['data']['notificacion1']);
-            cuentaNotificacionesNOLeidas();
-            notifyListeners();
+          for (var item in response['data']['notificacion1']) {
+            if (item['notEmpresa'] == dataUser.rucempresa) {
+              setInfoBusquedaNotificacionesPush(
+                  response['data']['notificacion1']);
+              cuentaNotificacionesNOLeidas();
+              notifyListeners();
+            }
           }
-        }
 
-        return response;
+          return response;
+        }
       }
-    }
-    if (response == null) {
-      _errorNotificacionesPush = false;
-      notifyListeners();
-      return null;
-    }
-    } else {
-    }
-   
+      if (response == null) {
+        _errorNotificacionesPush = false;
+        notifyListeners();
+        return null;
+      }
+    } else {}
   }
 
 // //=========================NOTIFICACION 2==================================//
@@ -2101,45 +2163,42 @@ class HomeController extends ChangeNotifier {
 
   Future buscaNotificacionesPush2(String? _search) async {
     final dataUser = await Auth.instance.getSession();
-    if (dataUser!=null) {
+    if (dataUser != null) {
       final response = await _api.getAllNotificacionesPush2(
-      token: '${dataUser.token}',
-    );
-    if (response != null) {
-      _errorNotificacionesPush2 = true;
+        token: '${dataUser.token}',
+      );
+      if (response != null) {
+        _errorNotificacionesPush2 = true;
 
-      //  print('response notificacion 2: ${response['data']}');
+        //  print('response notificacion 2: ${response['data']}');
 
-      if (response['data'].length > 0) {
-        for (var item in response['data']['notificacion2']) {
-          if (item['notTipo'] == 'COMUNICADO') {
-            setIdsNotificacionesComunicados(item['notId']);
+        if (response['data'].length > 0) {
+          for (var item in response['data']['notificacion2']) {
+            if (item['notTipo'] == 'COMUNICADO') {
+              setIdsNotificacionesComunicados(item['notId']);
+            }
           }
-        }
 
-        for (var item in response['data']['notificacion2']) {
-          if (item['notEmpresa'] == dataUser.rucempresa) {
-            setListaNotificacionesPush2(response['data']['notificacion2']);
-            cuentaNotificacionesNOLeidas2();
-            setInfoNotificacionAlerta(response['data']['notificacion2']);
+          for (var item in response['data']['notificacion2']) {
+            if (item['notEmpresa'] == dataUser.rucempresa) {
+              setListaNotificacionesPush2(response['data']['notificacion2']);
+              cuentaNotificacionesNOLeidas2();
+              setInfoNotificacionAlerta(response['data']['notificacion2']);
+            }
           }
-        }
 
-        return response;
-      } else {
-        _listaNotificacionesPush2 = [];
-        numNotificaciones2 = 0;
+          return response;
+        } else {
+          _listaNotificacionesPush2 = [];
+          numNotificaciones2 = 0;
+        }
       }
+      if (response == null) {
+        _errorNotificacionesPush2 = false;
+        return null;
+      }
+      notifyListeners();
     }
-    if (response == null) {
-      _errorNotificacionesPush2 = false;
-      return null;
-    }
-    notifyListeners();
-      
-    } 
-
-    
   }
 
   //====================== LEER LA NOTIFICACION_1
@@ -2428,26 +2487,25 @@ class HomeController extends ChangeNotifier {
     //   NotificatiosnService.showSnackBarError(data['msg']);
     // });
 
-       //================= FINALIZO TURNO DE NUEVA FORMA ===================//
-        serviceSocket.socket ?.emit('client:actualizarData', _pyloadDataFinaizaTurno);
-        serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-
-      if (data['tabla'] == 'registro' && data['regUser'] ==  infoUser.usuario &&   data['regEmpresa'] ==  infoUser.rucempresa) {
+    //================= FINALIZO TURNO DE NUEVA FORMA ===================//
+    serviceSocket.socket
+        ?.emit('client:actualizarData', _pyloadDataFinaizaTurno);
+    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+      if (data['tabla'] == 'registro' &&
+          data['regUser'] == infoUser.usuario &&
+          data['regEmpresa'] == infoUser.rucempresa) {
         //================= FINALIZO TURNO DE NUEVA FORMA ===================//
-        print('la info igual: ${data['tabla']} ==>   ${data['regUser']} ==  ${infoUser.usuario} &&   ${data['regEmpresa']} ==  ${infoUser.rucempresa}  ');
-         btnCtrl.setTurnoBTN(false);
-         setBotonTurno(false);
+        print(
+            'la info igual: ${data['tabla']} ==>   ${data['regUser']} ==  ${infoUser.usuario} &&   ${data['regEmpresa']} ==  ${infoUser.rucempresa}  ');
+        btnCtrl.setTurnoBTN(false);
+        setBotonTurno(false);
       }
-        });serviceSocket.socket?.on('server:error', (data) async {
-          NotificatiosnService.showSnackBarError(data['msg']);
-        });
+    });
+    serviceSocket.socket?.on('server:error', (data) async {
+      NotificatiosnService.showSnackBarError(data['msg']);
+    });
 
-
-      //=======================================================//
-
-
-
-
+    //=======================================================//
   }
 
 //========ESTE BOTON INICIA Y FINALIZA TURNO ======//
@@ -2479,54 +2537,48 @@ class HomeController extends ChangeNotifier {
   }
 
   Future getValidaTurnoServer(BuildContext context) async {
-      final btnCtrl = context.read<BotonTurnoController>();
+    final btnCtrl = context.read<BotonTurnoController>();
     final dataUser = await Auth.instance.getSession();
     // print('token Usuario *********************** ${dataUser!.token}');
-    if (dataUser!=null) {
-       final response = await _api.revisaTokenTurno(
-      token: dataUser.token,
-    );
+    if (dataUser != null) {
+      final response = await _api.revisaTokenTurno(
+        token: dataUser.token,
+      );
 
-    if (response != null) {
-       await Auth.instance.deleteIdRegistro();
-       await Auth.instance.saveTurnoSessionUser(response); 
-      _errorRefreshToken = true;
-      // setTurnoBTN(false);
-
-      // setGetTestTurno(false);
-      // setBotonTurno(false);
-
-      if (response['data'].length > 0) {
-
-
+      if (response != null) {
         await Auth.instance.deleteIdRegistro();
-        await Auth.instance.saveIdRegistro('${response['data']['regId']}');
-         btnCtrl.setTurnoBTN(true);
-        //  Navigator.pushNamed(context,'splash');
+        await Auth.instance.saveTurnoSessionUser(response);
+        _errorRefreshToken = true;
+        // setTurnoBTN(false);
 
-        setBotonTurno(true);
-        setGetTestTurno(true);
-        //  Navigator.pushNamed(context,'splash');
-      } 
-      else {
-        //  setTurnoBTN(false);
-        btnCtrl.setTurnoBTN(false);
-        setGetTestTurno(false);
-        setBotonTurno(false);
-        
+        // setGetTestTurno(false);
+        // setBotonTurno(false);
+
+        if (response['data'].length > 0) {
+          await Auth.instance.deleteIdRegistro();
+          await Auth.instance.saveIdRegistro('${response['data']['regId']}');
+          btnCtrl.setTurnoBTN(true);
+          //  Navigator.pushNamed(context,'splash');
+
+          setBotonTurno(true);
+          setGetTestTurno(true);
+          //  Navigator.pushNamed(context,'splash');
+        } else {
+          //  setTurnoBTN(false);
+          btnCtrl.setTurnoBTN(false);
+          setGetTestTurno(false);
+          setBotonTurno(false);
+        }
+
+        return response;
       }
-
-      return response;
-    }
-    if (response == null) {
-      _errorRefreshToken = false;
-      // Auth.instance.deleteSesion(context);
-      notifyListeners();
-      return null;
-    }
-    } else {
-    }
-   
+      if (response == null) {
+        _errorRefreshToken = false;
+        // Auth.instance.deleteSesion(context);
+        notifyListeners();
+        return null;
+      }
+    } else {}
   }
 
   bool? _tieneInternet;
@@ -2551,7 +2603,7 @@ class HomeController extends ChangeNotifier {
     );
 
     if (response != null) {
-     buscaNotificacionesMenu(context);
+      buscaNotificacionesMenu(context);
       return response;
     }
     if (response == null) {
@@ -2881,10 +2933,12 @@ class HomeController extends ChangeNotifier {
       "perUserLogin": _usuario,
       "newpassword": _claveNueva
     };
-        final response = await _api.cambiarClaveUsuario(context: context,
-        data: _infoNuevaClave, id: dataUser!.id, token: '${dataUser.token}');
+    final response = await _api.cambiarClaveUsuario(
+        context: context,
+        data: _infoNuevaClave,
+        id: dataUser!.id,
+        token: '${dataUser.token}');
     if (response != null) {
-   
       return response;
     }
     if (response == null) {
@@ -2896,51 +2950,48 @@ class HomeController extends ChangeNotifier {
 
 //========================== MESES DE HORARIO =======================//
 
+  List _listaMeses = [];
+  List get getListaMeses => _listaMeses;
 
-List _listaMeses=[];
-List get  getListaMeses=>_listaMeses;
-
- void setListaMeses( _meses) {
+  void setListaMeses(_meses) {
     _listaMeses = [];
-   for (var item in  _meses) {
-       _listaMeses.add(item['mes']);
+    for (var item in _meses) {
+      _listaMeses.add(item['mes']);
     }
-   
 
     notifyListeners();
   }
 
- String getMonthName(String date) {
-  Map<String, String> months = {
-    "01": "Enero",
-    "02": "Febrero",
-    "03": "Marzo",
-    "04": "Abril",
-    "05": "Mayo",
-    "06": "Junio",
-    "07": "Julio",
-    "08": "Agosto",
-    "09": "Septiembre",
-    "10": "Octubre",
-    "11": "Noviembre",
-    "12": "Diciembre",
-  };
+  String getMonthName(String date) {
+    Map<String, String> months = {
+      "01": "Enero",
+      "02": "Febrero",
+      "03": "Marzo",
+      "04": "Abril",
+      "05": "Mayo",
+      "06": "Junio",
+      "07": "Julio",
+      "08": "Agosto",
+      "09": "Septiembre",
+      "10": "Octubre",
+      "11": "Noviembre",
+      "12": "Diciembre",
+    };
 
-  String monthNumber = date.split("-")[1];
-  return months[monthNumber] ?? "Mes desconocido";
-}
-
+    String monthNumber = date.split("-")[1];
+    return months[monthNumber] ?? "Mes desconocido";
+  }
 
   Future seleccionaMeses(BuildContext context) async {
     final dataUser = await Auth.instance.getSession();
-     final response = await _api.getAllMesesHorario(context: context,
-       token: '${dataUser!.token}');
+    final response = await _api.getAllMesesHorario(
+        context: context, token: '${dataUser!.token}');
 
     if (response != null) {
-          List jsonList = jsonDecode(response);
-          //       print('message API: ${jsonList} ');
-          // print('lRESPUESTA API: ${jsonList.runtimeType} ');
-        setListaMeses(jsonList);
+      List jsonList = jsonDecode(response);
+      //       print('message API: ${jsonList} ');
+      // print('lRESPUESTA API: ${jsonList.runtimeType} ');
+      setListaMeses(jsonList);
       return response;
     }
     if (response == null) {
@@ -2951,30 +3002,27 @@ List get  getListaMeses=>_listaMeses;
 
 //*************************//
 
-Future<String> downloadPDF(String url, String fileName) async {
-  try {
-    // Obtiene el directorio de almacenamiento temporal
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    
-    // Define la ruta completa para el archivo PDF
-    String fullPath = "$tempPath/$fileName.pdf";
-    
-    // Usa Dio para descargar el archivo PDF
-    Dio dio = Dio();
-    await dio.download(url, fullPath);
-    
-    return fullPath;
-  } catch (e) {
-    print("Error descargando el archivo: $e");
-    return '';
+  Future<String> downloadPDF(String url, String fileName) async {
+    try {
+      // Obtiene el directorio de almacenamiento temporal
+      Directory tempDir = await getTemporaryDirectory();
+      String tempPath = tempDir.path;
+
+      // Define la ruta completa para el archivo PDF
+      String fullPath = "$tempPath/$fileName.pdf";
+
+      // Usa Dio para descargar el archivo PDF
+      Dio dio = Dio();
+      await dio.download(url, fullPath);
+
+      return fullPath;
+    } catch (e) {
+      print("Error descargando el archivo: $e");
+      return '';
+    }
   }
-}
 
-
-
-
-bool _downloading = false;
+  bool _downloading = false;
   bool get downloading => _downloading;
   String _filePaths = '';
 
@@ -2998,46 +3046,39 @@ bool _downloading = false;
 
 // print("UBICACION DE el archivo DESCARGADO: $_filePath");
 
-
     notifyListeners();
   }
-
 
 //========================== NOTIFICACIONES EN EL MENU =======================//
 
+  List _listaNotificacionesMenu = [];
+  List get getListaNotificacionesMenu => _listaNotificacionesMenu;
 
-List _listaNotificacionesMenu=[];
-List get  getListaNotificacionesMenu=>_listaNotificacionesMenu;
-
- void setListaNotificacionesMenu( _info) {
+  void setListaNotificacionesMenu(_info) {
     _listaNotificacionesMenu = [];
 
-      _listaNotificacionesMenu.addAll(_info);
+    _listaNotificacionesMenu.addAll(_info);
 
     //  print('RECIBE NOTIFICACION DE MENU API: ${_listaNotificacionesMenu} ');
-      // print('RECIBE NOTIFICACION DE MENU API: ${_listaNotificacionesMenu} ');
-  //  for (var item in  _meses) {
-  //      _listaMeses.add(item['mes']);
-  //   }
-   
+    // print('RECIBE NOTIFICACION DE MENU API: ${_listaNotificacionesMenu} ');
+    //  for (var item in  _meses) {
+    //      _listaMeses.add(item['mes']);
+    //   }
 
     notifyListeners();
   }
 
-
-
-
   Future buscaNotificacionesMenu(BuildContext context) async {
     final dataUser = await Auth.instance.getSession();
-     final response = await _api.getAllNotificacionesMenu(context: context,
-       token: '${dataUser!.token}');
+    final response = await _api.getAllNotificacionesMenu(
+        context: context, token: '${dataUser!.token}');
 
     if (response != null) {
-          List jsonList = jsonDecode(response);
-                // print('message API: ${jsonList} ');
-          // print('RESPUESTA NOTIFICACIONES MENU API: ${response.runtimeType} ');
-          //  print('RESPUESTA NOTIFICACIONES MENU API: $response ');
-        setListaNotificacionesMenu(jsonList);
+      List jsonList = jsonDecode(response);
+      // print('message API: ${jsonList} ');
+      // print('RESPUESTA NOTIFICACIONES MENU API: ${response.runtimeType} ');
+      //  print('RESPUESTA NOTIFICACIONES MENU API: $response ');
+      setListaNotificacionesMenu(jsonList);
       return response;
     }
     if (response == null) {
@@ -3047,7 +3088,7 @@ List get  getListaNotificacionesMenu=>_listaNotificacionesMenu;
   }
 
 //************VERIFICA GPS ACTIVO *************//
- 
+
 // bool _isGpsEnabled = false;
 //   bool get isGpsEnabled => _isGpsEnabled;
 
@@ -3076,7 +3117,7 @@ List get  getListaNotificacionesMenu=>_listaNotificacionesMenu;
 
 //   }
 
-bool _isGpsEnabled = false;
+  bool _isGpsEnabled = false;
   bool get isGpsEnabled => _isGpsEnabled;
 
   GpsProvider() {
@@ -3085,7 +3126,8 @@ bool _isGpsEnabled = false;
 
   void _startListeningToGpsStatus() {
     Geolocator.Geolocator.getPositionStream().listen((Position position) async {
-      bool serviceEnabled = await Geolocator.Geolocator.isLocationServiceEnabled();
+      bool serviceEnabled =
+          await Geolocator.Geolocator.isLocationServiceEnabled();
       if (serviceEnabled != _isGpsEnabled) {
         _isGpsEnabled = serviceEnabled;
         notifyListeners();
@@ -3098,10 +3140,9 @@ bool _isGpsEnabled = false;
     notifyListeners();
     return _isGpsEnabled;
   }
-  
 
 //**********************************//
- List _videos = [
+  List _videos = [
     // {
     //   'title': 'Video 1',
     //   'videoId': 'me4h_Ye3o3Y', // Reemplaza con el ID de video real
@@ -3118,43 +3159,37 @@ bool _isGpsEnabled = false;
     //   'title': 'Video 3',
     //   'videoId': 'Zs9MZosVuqo', // Reemplaza con el ID de video real
     // },
-    
   ];
 
   List get videos => _videos;
 
+  Future buscaBitacorasCierre(String? _search, String? notificacion) async {
+    final dataUser = await Auth.instance.getSession();
+    final response = await _api.getAllVideosAyuda(
+      token: '${dataUser!.token}',
+    );
 
+    if (response != null) {
+      _videos = [];
+      _videos.addAll(response);
+      _allItemsFilters.addAll(response);
 
-
-
-
-Future buscaBitacorasCierre(String? _search, String? notificacion) async {
-  final dataUser = await Auth.instance.getSession();
-  final response = await _api.getAllVideosAyuda(
-    token: '${dataUser!.token}',
-  );
-
-  if (response != null) {
-    _videos=[];
-    _videos.addAll(response);
-    _allItemsFilters.addAll(response);
-     
       // print(' LA RESPUESTA DEL videos ayuda; ${_videos}');
-    // setBtacotasCierradas(response);
-    // setListFilter(response); // Llama a la función para actualizar la lista filtrada
-    notifyListeners();
-    return response;
+      // setBtacotasCierradas(response);
+      // setListFilter(response); // Llama a la función para actualizar la lista filtrada
+      notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      notifyListeners();
+      return null;
+    }
   }
-  if (response == null) {
-    notifyListeners();
-    return null;
-  }
-}
 
 //====================  BUSQUEDAS ===========================//
-bool noResults = false; 
-List _allItemsFilters = [];
-List get allItemsFilters => _allItemsFilters;
+  bool noResults = false;
+  List _allItemsFilters = [];
+  List get allItemsFilters => _allItemsFilters;
 
 // void setListFilter(List _list) {
 //   _allItemsFilters = [];
@@ -3163,57 +3198,55 @@ List get allItemsFilters => _allItemsFilters;
 //   // print('LA RESPUESTA DEL getAllCierreBitacoras: $_bitacotasCierradas');
 //   notifyListeners();
 // }
-void setListFilter(List _list) {
- 
-  if (_list is List) {
-    _allItemsFilters.clear(); // Limpiar la lista
-    _allItemsFilters.addAll(_list); // Agregar nuevos elementos
-    noResults = _list.isEmpty; // Actualiza la bandera de resultados
-    notifyListeners(); // Notifica a los oyentes
-  } else {
-    print('Error: _list no es de tipo List<Map<String, dynamic>>'); // Mensaje de error
-  }
-}
-
-void search(String query) {
-  List<Map<String, dynamic>> originalList = List.from(_videos); // Copia de la lista original
-
-  if (query.isEmpty) {
-    // Restablece la lista completa si no hay búsqueda
-    _allItemsFilters = originalList;
-    noResults = false;
-  } else {
-    // Filtra según el término de búsqueda
-    _allItemsFilters = originalList.where((item) {
-      final sidInfo = item['sidInfo'];
-      final componentMatch = (sidInfo['component']?.toLowerCase() ?? '').contains(query.toLowerCase());
-      final nameMatch = (sidInfo['name']?.toLowerCase() ?? '').contains(query.toLowerCase());
-      final descriptionMatch = (sidInfo['descripcion']?.toLowerCase() ?? '').contains(query.toLowerCase());
-
-      // Si deseas buscar también dentro de los tutoriales
-      final tutorialMatch = sidInfo['tutoriales'].any((tuto) {
-        return (tuto['nombreVideo']?.toLowerCase() ?? '').contains(query.toLowerCase()) ||
-               (tuto['descVideo']?.toLowerCase() ?? '').contains(query.toLowerCase());
-      });
-
-      // Retorna verdadero si cualquiera de los criterios de búsqueda se cumple
-      return componentMatch || nameMatch || descriptionMatch || tutorialMatch;
-    }).toList();
-
-    // Verifica si hay resultados
-    noResults = _allItemsFilters.isEmpty;
+  void setListFilter(List _list) {
+    if (_list is List) {
+      _allItemsFilters.clear(); // Limpiar la lista
+      _allItemsFilters.addAll(_list); // Agregar nuevos elementos
+      noResults = _list.isEmpty; // Actualiza la bandera de resultados
+      notifyListeners(); // Notifica a los oyentes
+    } else {
+      print(
+          'Error: _list no es de tipo List<Map<String, dynamic>>'); // Mensaje de error
+    }
   }
 
-  notifyListeners();
-}
+  void search(String query) {
+    List<Map<String, dynamic>> originalList =
+        List.from(_videos); // Copia de la lista original
 
+    if (query.isEmpty) {
+      // Restablece la lista completa si no hay búsqueda
+      _allItemsFilters = originalList;
+      noResults = false;
+    } else {
+      // Filtra según el término de búsqueda
+      _allItemsFilters = originalList.where((item) {
+        final sidInfo = item['sidInfo'];
+        final componentMatch = (sidInfo['component']?.toLowerCase() ?? '')
+            .contains(query.toLowerCase());
+        final nameMatch = (sidInfo['name']?.toLowerCase() ?? '')
+            .contains(query.toLowerCase());
+        final descriptionMatch = (sidInfo['descripcion']?.toLowerCase() ?? '')
+            .contains(query.toLowerCase());
 
+        // Si deseas buscar también dentro de los tutoriales
+        final tutorialMatch = sidInfo['tutoriales'].any((tuto) {
+          return (tuto['nombreVideo']?.toLowerCase() ?? '')
+                  .contains(query.toLowerCase()) ||
+              (tuto['descVideo']?.toLowerCase() ?? '')
+                  .contains(query.toLowerCase());
+        });
 
+        // Retorna verdadero si cualquiera de los criterios de búsqueda se cumple
+        return componentMatch || nameMatch || descriptionMatch || tutorialMatch;
+      }).toList();
 
+      // Verifica si hay resultados
+      noResults = _allItemsFilters.isEmpty;
+    }
 
+    notifyListeners();
+  }
 
 //===============================================//
-
-
 }
-

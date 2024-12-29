@@ -806,7 +806,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 1.0.4',
+              'Ver: 1.0.5',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,
@@ -1610,18 +1610,26 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   ),
                 ],
               ),
-              // Container(
-              //   color: Colors.grey.shade300,
-              //   height: size.iScreen(0.5),
-              //   width: size.wScreen(80),
-              // ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  btnAlerta(size),
-                  btnTurnoPrincipal(size, ctrlTheme),
-                ],
+              //========================  BOTON ALERTA Y  TURNO ===========================//
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(
+                    color: Colors.grey.shade300,
+                    width: 2.0,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    btnAlerta(size),
+                    btnTurnoPrincipal(size, ctrlTheme),
+                  ],
+                ),
               ),
+              //=========================================================================//
             ],
           ),
           // Center(
@@ -2906,102 +2914,172 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   //     });
   //   });
   // }
+  // Widget btnTurnoPrincipal(
+  //   Responsive size,
+  //   ThemeApp ctrl,
+  // ) {
+  //   return Consumer<BotonTurnoController>(builder: (_, valueTurno, __) {
+  //     return Container(
+  //       width: size.iScreen(11.0),
+  //       height: size.iScreen(11.0),
+  //       decoration: BoxDecoration(
+  //         boxShadow: const <BoxShadow>[
+  //           BoxShadow(
+  //               color: Colors.black54,
+  //               blurRadius: 2.0,
+  //               offset: Offset(0.0, 0.75))
+  //         ],
+  //         color: Colors.white,
+  //         borderRadius: BorderRadius.circular(100),
+  //         border: Border.all(
+  //           color: valueTurno.getTurnoBTN == true
+  //               ? Colors.black //,_color
+  //               : Colors.black, // Color del borde
+  //           width: 1.5, // Grosor del borde
+  //         ),
+  //       ),
+  //       margin: EdgeInsets.all(size.iScreen(0.2)),
+  //       padding: EdgeInsets.all(size.iScreen(0.2)),
+  //       child: ClipRRect(
+  //         borderRadius: BorderRadius.circular(0),
+  //         child: Container(
+  //             decoration: BoxDecoration(
+  //                 color: valueTurno.getTurnoBTN == true
+  //                     ? ctrl.combinedColors[3]
+  //                     : Colors.grey, //Aqui se cambia el color de los botones
+  //                 borderRadius: BorderRadius.circular(100)),
+  //             child: MaterialButton(
+  //                 elevation: 20.0,
+  //                 splashColor: valueTurno.getTurnoBTN == true
+  //                     ? ctrl.combinedColors[2]
+  //                     : const Color(0xffbd1823),
+  //                 onPressed: () {
+  //                   if (valueTurno.getTurnoBTN) {
+  //                     _modalFinalizarTurno(size);
+  //                   } else {
+  //                     _modalInciaTurno(
+  //                       size,
+  //                     );
+  //                   }
+  //                 },
+  //                 child: Column(
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   children: [
+  //                     // Image.asset('assets/imgs/$icon',
+  //                     //     color: (alerta)?Colors.white:color, width: size.iScreen(8.0)),
+  //                     // Icon(Icons.list,size: size.iScreen(4.0),),
+  //                     Text(
+  //                       valueTurno.getTurnoBTN == true
+  //                           ? 'TURNO ACTIVO'
+  //                           : 'TURNO INACTIVO',
+  //                       textAlign: TextAlign.center,
+  //                       style: GoogleFonts.roboto(
+  //                           fontSize: size.iScreen(1.4),
+  //                           color: valueTurno.getTurnoBTN == true
+  //                               ? Colors.white
+  //                               : Colors.black,
+  //                           fontWeight: FontWeight.bold),
+  //                     ),
+  //                     // Text(
+  //                     //   valueTurno.getBtnTurno==true?'ACTIVADO':'DESACTIVADO',
+  //                     //   textAlign: TextAlign.center,
+  //                     //   style: GoogleFonts.roboto(
+  //                     //       fontSize: size.iScreen(1.5),
+  //                     //       color: Colors.white,
+  //                     //       fontWeight: FontWeight.bold),
+  //                     // ),
+  //                     valueTurno.getTurnoBTN == true
+  //                         ? Icon(
+  //                             Icons.gpp_good_outlined,
+  //                             color: Colors.white,
+  //                             size: size.iScreen(5),
+  //                           )
+  //                         : Icon(Icons.gpp_bad_outlined,
+  //                             color: Colors.white, size: size.iScreen(5))
+  //                   ],
+  //                 )
+
+  //                 // Consumer<HomeController>(
+  //                 //   builder: (_, valueBtnTurno, __) {
+  //                 //     return
+
+  //                 //   },
+  //                 // )
+  //                 )),
+  //       ),
+  //     );
+  //   });
+  // }
   Widget btnTurnoPrincipal(
     Responsive size,
     ThemeApp ctrl,
   ) {
-    return Consumer<BotonTurnoController>(builder: (_, valueTurno, __) {
-      return Container(
-        width: size.iScreen(11.0),
-        height: size.iScreen(11.0),
-        decoration: BoxDecoration(
-          boxShadow: const <BoxShadow>[
-            BoxShadow(
-                color: Colors.black54,
-                blurRadius: 2.0,
-                offset: Offset(0.0, 0.75))
-          ],
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(100),
-          border: Border.all(
-            color: valueTurno.getTurnoBTN == true
-                ? Colors.black //,_color
-                : Colors.black, // Color del borde
-            width: 1.5, // Grosor del borde
+    return Consumer<BotonTurnoController>(
+      builder: (_, valueTurno, __) {
+        bool isTurnoActivo = valueTurno.getTurnoBTN;
+
+        return Container(
+          width: size.iScreen(12.0),
+          height: size.iScreen(12.0),
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 8.0, // Mayor desenfoque para una sombra suave
+                spreadRadius: 1.0, // Expande la sombra alrededor del contorno
+                offset: Offset(0.0, 0.0), // Sombra uniforme en todo el contorno
+              ),
+            ],
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: valueTurno.getTurnoBTN ? Colors.green : Colors.white,
+              width: 2.0,
+            ),
           ),
-        ),
-        margin: EdgeInsets.all(size.iScreen(0.2)),
-        padding: EdgeInsets.all(size.iScreen(0.2)),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: valueTurno.getTurnoBTN == true
-                      ? ctrl.combinedColors[3]
-                      : Colors.grey, //Aqui se cambia el color de los botones
-                  borderRadius: BorderRadius.circular(100)),
-              child: MaterialButton(
-                  elevation: 20.0,
-                  splashColor: valueTurno.getTurnoBTN == true
-                      ? ctrl.combinedColors[2]
-                      : const Color(0xffbd1823),
-                  onPressed: () {
-                    if (valueTurno.getTurnoBTN) {
-                      _modalFinalizarTurno(size);
-                    } else {
-                      _modalInciaTurno(
-                        size,
-                      );
-                    }
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Image.asset('assets/imgs/$icon',
-                      //     color: (alerta)?Colors.white:color, width: size.iScreen(8.0)),
-                      // Icon(Icons.list,size: size.iScreen(4.0),),
-                      Text(
-                        valueTurno.getTurnoBTN == true
-                            ? 'TURNO ACTIVO'
-                            : 'TURNO INACTIVO',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.roboto(
-                            fontSize: size.iScreen(1.4),
-                            color: valueTurno.getTurnoBTN == true
-                                ? Colors.white
-                                : Colors.black,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      // Text(
-                      //   valueTurno.getBtnTurno==true?'ACTIVADO':'DESACTIVADO',
-                      //   textAlign: TextAlign.center,
-                      //   style: GoogleFonts.roboto(
-                      //       fontSize: size.iScreen(1.5),
-                      //       color: Colors.white,
-                      //       fontWeight: FontWeight.bold),
-                      // ),
-                      valueTurno.getTurnoBTN == true
-                          ? Icon(
-                              Icons.gpp_good_outlined,
-                              color: Colors.white,
-                              size: size.iScreen(5),
-                            )
-                          : Icon(Icons.gpp_bad_outlined,
-                              color: Colors.white, size: size.iScreen(5))
-                    ],
-                  )
-
-                  // Consumer<HomeController>(
-                  //   builder: (_, valueBtnTurno, __) {
-                  //     return
-
-                  //   },
-                  // )
-                  )),
-        ),
-      );
-    });
+          margin: EdgeInsets.all(size.iScreen(0.5)),
+          child: MaterialButton(
+            shape: const CircleBorder(),
+            elevation: 5.0,
+            color: valueTurno.getTurnoBTN ? Colors.green : Colors.grey.shade300,
+            splashColor:
+                valueTurno.getTurnoBTN ? Colors.lightGreen : Colors.black45,
+            onPressed: () {
+              if (valueTurno.getTurnoBTN) {
+                _modalFinalizarTurno(size);
+              } else {
+                _modalInciaTurno(size);
+              }
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  valueTurno.getTurnoBTN
+                      ? Icons.check_circle_outline
+                      : Icons.remove_circle_outline,
+                  color: valueTurno.getTurnoBTN ? Colors.white : Colors.black,
+                  size: size.iScreen(4.0),
+                ),
+                SizedBox(height: size.iScreen(1.0)),
+                Text(
+                  valueTurno.getTurnoBTN ? 'TURNO ACTIVO' : 'TURNO INACTIVO',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.roboto(
+                    fontSize: size.iScreen(1.6),
+                    color: valueTurno.getTurnoBTN ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
+
+  //=========================================================================//
 
   Widget btnTurno(Responsive size, Color color, HomeController ctrl) {
     return Consumer<SocketService>(builder: (_, valueEstadoInternet, __) {
@@ -3235,83 +3313,191 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   //   },);
 
   // }
+  // Widget btnAlerta(Responsive size) {
+  //   return Consumer<HomeController>(
+  //     builder: (_, value, __) {
+  //       return Container(
+  //         decoration: BoxDecoration(
+  //           color: Colors.grey.shade200,
+
+  //           borderRadius: BorderRadius.circular(10.0),
+  //           border: Border.all(
+  //               color: Colors.grey.shade300,
+  //               width: 2.0), // Borde rojo añadido aquí
+  //         ),
+  //         margin: EdgeInsets.only(
+  //             right: size.iScreen(1.0),
+  //             left: size.iScreen(1.0),
+  //             top: size.iScreen(1.0)),
+  //         padding: EdgeInsets.all(size.iScreen(1.0)),
+  //         width: size.wScreen(45.0),
+  //         alignment: Alignment.center,
+  //         child: AvatarGlow(
+  //           //TODO: FCODEV PROPIEDAD YA NO EXISTE endRadius: 60,
+  //           glowColor: value.alarmActivated == true ? Colors.red : Colors.white,
+  //           duration: const Duration(milliseconds: 1000),
+  //           child: Row(
+  //             children: [
+  //               Container(
+  //                 width: size.iScreen(11.0),
+  //                 height: size.iScreen(11.0),
+  //                 decoration: BoxDecoration(
+  //                     boxShadow: <BoxShadow>[
+  //                       BoxShadow(
+  //                           // color: Colors.black54,
+  //                           color: value.alarmActivated == true
+  //                               ? const Color(0xffe93301)
+  //                               : Colors.black54,
+  //                           blurRadius: 5.0,
+  //                           offset: const Offset(0.0, 0.75))
+  //                     ],
+  //                     color: Colors.white,
+  //                     borderRadius: BorderRadius.circular(100)),
+  //                 margin: EdgeInsets.all(size.iScreen(0.5)),
+  //                 child: ClipRRect(
+  //                   borderRadius: BorderRadius.circular(100),
+  //                   child: Container(
+  //                       decoration: BoxDecoration(
+  //                           color: value.alarmActivated == true
+  //                               ? Colors.white
+  //                               : const Color(
+  //                                   0xffe93301), //     Color(0xffe93301), //Aqui se cambia el color de los botones
+  //                           borderRadius: BorderRadius.circular(8)),
+  //                       child: MaterialButton(
+  //                         elevation: 20.0,
+  //                         splashColor: const Color(0xffe93301),
+  //                         onPressed: value.alarmActivated == false
+  //                             ? () {
+  //                                 // print('se activo la alarma');
+  //                                 value.activateAlarm(true);
+  //                                 Provider.of<HomeController>(context,
+  //                                         listen: false)
+  //                                     .enviaAlerta();
+  //                               }
+  //                             : null,
+  //                         child: Icon(
+  //                           Icons.campaign_outlined,
+  //                           size: size.iScreen(8.5),
+  //                           color: value.alarmActivated == true
+  //                               ? const Color(0xffe93301)
+  //                               : Colors.white,
+  //                         ),
+  //                       )),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+  //================================BOTON ALERTA ========================================//
   Widget btnAlerta(Responsive size) {
     return Consumer<HomeController>(
       builder: (_, value, __) {
         return Container(
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-                color: Colors.grey.shade300,
-                width: 2.0), // Borde rojo añadido aquí
-          ),
+          // decoration: BoxDecoration(
+          //   color: Colors.grey.shade200,
+          //   borderRadius: BorderRadius.circular(10.0),
+          //   border: Border.all(
+          //     color: Colors.grey.shade300,
+          //     width: 2.0,
+          //   ),
+          // ),
           margin: EdgeInsets.only(
-              right: size.iScreen(1.0),
-              left: size.iScreen(1.0),
-              top: size.iScreen(1.0)),
+            right: size.iScreen(1.0),
+            left: size.iScreen(1.0),
+            top: size.iScreen(1.0),
+          ),
           padding: EdgeInsets.all(size.iScreen(1.0)),
           width: size.wScreen(45.0),
           alignment: Alignment.center,
-          child: AvatarGlow(
-            //TODO: FCODEV PROPIEDAD YA NO EXISTE endRadius: 60,
-            glowColor: value.alarmActivated == true ? Colors.red : Colors.white,
-            duration: const Duration(milliseconds: 1000),
-            child: Row(
-              children: [
-                Container(
-                  width: size.iScreen(11.0),
-                  height: size.iScreen(11.0),
-                  decoration: BoxDecoration(
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            // color: Colors.black54,
-                            color: value.alarmActivated == true
-                                ? const Color(0xffe93301)
-                                : Colors.black54,
-                            blurRadius: 5.0,
-                            offset: const Offset(0.0, 0.75))
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100)),
-                  margin: EdgeInsets.all(size.iScreen(0.5)),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: value.alarmActivated == true
-                                ? Colors.white
-                                : const Color(
-                                    0xffe93301), //     Color(0xffe93301), //Aqui se cambia el color de los botones
-                            borderRadius: BorderRadius.circular(8)),
-                        child: MaterialButton(
-                          elevation: 20.0,
-                          splashColor: const Color(0xffe93301),
-                          onPressed: value.alarmActivated == false
-                              ? () {
-                                  // print('se activo la alarma');
-                                  value.activateAlarm(true);
-                                  Provider.of<HomeController>(context,
-                                          listen: false)
-                                      .enviaAlerta();
-                                }
-                              : null,
-                          child: Icon(
-                            Icons.campaign_outlined,
-                            size: size.iScreen(8.5),
-                            color: value.alarmActivated == true
-                                ? const Color(0xffe93301)
-                                : Colors.white,
-                          ),
-                        )),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child: value.alarmActivated
+              ? AvatarGlow(
+                  glowColor: Colors.red,
+                  duration: const Duration(milliseconds: 1000),
+                  child: _buildButtonContent(size, value),
+                )
+              : _buildButtonContent(size, value),
         );
       },
+    );
+  }
+  //=========================================================================//
+
+  // // Función para construir un contenedor de color
+  // Widget buildColorContainer(String label) {
+  //   final ctrl = context.read<ThemeApp>();
+
+  //   return Container(
+  //     color: ctrl.secondaryColor,
+  //     height: 50,
+  //     width: 100,
+  //     margin: const EdgeInsets.symmetric(vertical: 5),
+  //     child: Center(
+  //       child: Text(
+  //         label,
+  //         style: const TextStyle(
+  //           color: Colors.white,
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Widget _buildButtonContent(Responsive size, HomeController value) {
+    return Row(
+      children: [
+        Container(
+          width: size.iScreen(11.0),
+          height: size.iScreen(11.0),
+          decoration: BoxDecoration(
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: value.alarmActivated == true
+                    ? const Color(0xffe93301)
+                    : Colors.black54,
+                blurRadius: 5.0,
+                offset: const Offset(0.0, 0.75),
+              )
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          margin: EdgeInsets.all(size.iScreen(0.5)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: Container(
+              decoration: BoxDecoration(
+                color: value.alarmActivated == true
+                    ? Colors.white
+                    : const Color(0xffe93301),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: MaterialButton(
+                elevation: 20.0,
+                splashColor: const Color(0xffe93301),
+                onPressed: value.alarmActivated == false
+                    ? () {
+                        value.activateAlarm(true);
+                        Provider.of<HomeController>(context, listen: false)
+                            .enviaAlerta();
+                      }
+                    : null,
+                child: Icon(
+                  Icons.campaign_outlined,
+                  size: size.iScreen(8.5),
+                  color: value.alarmActivated == true
+                      ? const Color(0xffe93301)
+                      : Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -3701,6 +3887,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       showDialog(
           context: context,
           builder: (buildcontext) {
+            final ctrlHome = context.read<HomeController>();
+            ctrlHome.getValidaTurnoServer(context);
             return CupertinoAlertDialog(
               title: const Text("Aviso"),
               content: Text('${data['msg']}'),
