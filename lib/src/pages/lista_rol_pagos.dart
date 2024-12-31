@@ -217,7 +217,9 @@ class _ListaRolPagosState extends State<ListaRolPagos> {
                                       //     .toString()
                                       //     .replaceAll("T", " ")
                                       //     .replaceAll("000Z", " "),
-                                      fechaLocal,
+                                      fechaLocal.isNotEmpty
+                                          ? fechaLocal
+                                          : '--- --- --- --- --- ',
                                       style: GoogleFonts.lexendDeca(
                                           fontSize: size.iScreen(1.5),
                                           color: Colors.black87,
