@@ -2541,42 +2541,46 @@ class HomeController extends ChangeNotifier {
     final dataUser = await Auth.instance.getSession();
     // print('token Usuario *********************** ${dataUser!.token}');
     if (dataUser != null) {
-      final response = await _api.revisaTokenTurno(
-        token: dataUser.token,
-      );
+      if (dataUser.rol!.contains('ADMIN')) {
+        btnCtrl.setTurnoBTN(true);
+      } else {
+        final response = await _api.revisaTokenTurno(
+          token: dataUser.token,
+        );
 
-      if (response != null) {
-        await Auth.instance.deleteIdRegistro();
-        await Auth.instance.saveTurnoSessionUser(response);
-        _errorRefreshToken = true;
-        // setTurnoBTN(false);
-
-        // setGetTestTurno(false);
-        // setBotonTurno(false);
-
-        if (response['data'].length > 0) {
+        if (response != null) {
           await Auth.instance.deleteIdRegistro();
-          await Auth.instance.saveIdRegistro('${response['data']['regId']}');
-          btnCtrl.setTurnoBTN(true);
-          //  Navigator.pushNamed(context,'splash');
+          await Auth.instance.saveTurnoSessionUser(response);
+          _errorRefreshToken = true;
+          // setTurnoBTN(false);
 
-          setBotonTurno(true);
-          setGetTestTurno(true);
-          //  Navigator.pushNamed(context,'splash');
-        } else {
-          //  setTurnoBTN(false);
-          btnCtrl.setTurnoBTN(false);
-          setGetTestTurno(false);
-          setBotonTurno(false);
+          // setGetTestTurno(false);
+          // setBotonTurno(false);
+
+          if (response['data'].length > 0) {
+            await Auth.instance.deleteIdRegistro();
+            await Auth.instance.saveIdRegistro('${response['data']['regId']}');
+            btnCtrl.setTurnoBTN(true);
+            //  Navigator.pushNamed(context,'splash');
+
+            setBotonTurno(true);
+            setGetTestTurno(true);
+            //  Navigator.pushNamed(context,'splash');
+          } else {
+            //  setTurnoBTN(false);
+            btnCtrl.setTurnoBTN(false);
+            setGetTestTurno(false);
+            setBotonTurno(false);
+          }
+
+          return response;
         }
-
-        return response;
-      }
-      if (response == null) {
-        _errorRefreshToken = false;
-        // Auth.instance.deleteSesion(context);
-        notifyListeners();
-        return null;
+        if (response == null) {
+          _errorRefreshToken = false;
+          // Auth.instance.deleteSesion(context);
+          notifyListeners();
+          return null;
+        }
       }
     } else {}
   }

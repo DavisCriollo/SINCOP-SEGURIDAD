@@ -636,7 +636,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 child: Text('${ctrlHome.getUsuarioInfo!.rucempresa}',
                     style: GoogleFonts.roboto(
                         fontSize: size.iScreen(3.0),
-                        fontWeight: FontWeight.normal)),
+                        fontWeight: FontWeight.bold)),
               ),
             ),
             // Consumer<BotonTurnoController>(builder: (_, values,__) {
@@ -806,7 +806,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 1.0.5',
+              'Ver: 1.0.6',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,
@@ -905,9 +905,15 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     unselectedItemColor:
                         Colors.white, // color de texto no seleccionado
                     onTap: (index) {
+                      final ctrlBoton = context.read<BotonTurnoController>();
                       provider.setIndex(index);
                       homeControl.validaInicioDeSesion(context);
-                      provider.getValidaTurnoServer(context);
+                      if (widget.tipo!.contains('ADMIN')) {
+                        ctrlBoton.setTurnoBTN(true);
+                      } else {
+                        provider.getValidaTurnoServer(context);
+                      }
+
                       homeControl.getAllMantenimientos();
                       if (index == 3) {
                         provider.buscaBitacorasCierre('', 'false');
@@ -1501,9 +1507,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                       width: size.iScreen(2.0),
                                     ),
                                     Icon(
-                                      Icons.edit,
+                                      Icons.manage_accounts,
                                       size: size.iScreen(3.0),
-                                      color: ctrlTheme.secondaryColor,
+                                      color: ctrlTheme.primaryColor,
                                     ),
                                   ],
                                 ),
@@ -2321,7 +2327,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       NotificatiosnService.showSnackBarDanger(
                           'NO HA INICIADO TURNO');
                     }
-                    if ((widget.tipo!.contains('SUPERVISOR'))) {
+                    if ((widget.tipo!.contains('SUPERVISOR') ||
+                        widget.tipo!.contains('ADMIN'))) {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
                               ListaInformesGuardiasPage(usuario: widget.user)));
@@ -2344,11 +2351,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   } else {
                     if (ctrlHome.getTurnoBTN == true) {
                       if ((widget.tipo!.contains('GUARDIA') ||
-                          widget.tipo!.contains('SUPERVISOR'))) {
+                          widget.tipo!.contains('SUPERVISOR') ||
+                          widget.tipo!.contains('ADMIN'))) {
                         Provider.of<ConsignasController>(context, listen: false)
                             .getTodasLasConsignasClientes('', 'false');
                         if (widget.tipo!.contains('GUARDIA') ||
-                            widget.tipo!.contains('SUPERVISOR')) {
+                            widget.tipo!.contains('SUPERVISOR') ||
+                            widget.tipo!.contains('ADMIN')) {
                           Navigator.pushNamed(
                               context, 'listaConsignasGuardias');
                         }
@@ -2382,7 +2391,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         } else {
                           if (ctrlHome.getTurnoBTN == true) {
                             if ((widget.tipo!.contains('GUARDIA') ||
-                                widget.tipo!.contains('SUPERVISOR'))) {
+                                widget.tipo!.contains('SUPERVISOR') ||
+                                widget.tipo!.contains('ADMIN'))) {
                               Provider.of<AvisosController>(context,
                                       listen: false)
                                   .getTodosLosAvisos('', 'false');
@@ -2752,7 +2762,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               fontWeight: FontWeight.bold,
             )),
         child: Container(
-          width: size.iScreen(10.0),
+          // width: size.iScreen(10.0),
           height: size.iScreen(10.0),
           decoration: BoxDecoration(
             boxShadow: const <BoxShadow>[
@@ -2762,11 +2772,11 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   offset: Offset(0.0, 0.75))
             ],
             color: Colors.white,
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: BorderRadius.circular(8),
           ),
           margin: EdgeInsets.all(size.iScreen(1.0)),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: BorderRadius.circular(8),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors

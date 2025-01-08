@@ -1890,39 +1890,48 @@ class _ListaBitacoraState extends State<ListaBitacora> {
                                                               size.wScreen(100),
                                                           child: Column(
                                                             children: [
-                                                                                 //***********************************************/
-                                            SizedBox(
-                                              height: size.iScreen(1.0),
-                                            ),
-                                            //*****************************************/
-                                             SizedBox(
-                                              width: size.wScreen(100.0),
-                                              child: Row(
-                                                children: [
-                                                  Text('Tipo de Ingreso: ',
-                                                      style: GoogleFonts.lexendDeca(
-                                                          fontSize: size.iScreen(1.8),
-                                                          fontWeight: FontWeight.normal,
-                                                          color: Colors.grey)),
-                                                            Container(
-                                              // width: size.wScreen(100.0),
-                                              child: Text(
-                                                  '${visitante['bitTipoIngreso']}',
-                                                  style: GoogleFonts.lexendDeca(
-                                                      fontSize: size.iScreen(1.8),
-                                                      fontWeight: FontWeight.bold,
-                                                      // color: Colors.grey
-                                                      )),
-                                            ),
-                                                ],
-                                              ),
-                                            ),
-              
-                                          
-                                          
-                                            SizedBox(
-                                              height: size.iScreen(1.0),
-                                            ),
+                                                              //***********************************************/
+                                                              SizedBox(
+                                                                height: size
+                                                                    .iScreen(
+                                                                        1.0),
+                                                              ),
+                                                              //*****************************************/
+                                                              SizedBox(
+                                                                width: size
+                                                                    .wScreen(
+                                                                        100.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                        'Tipo de Ingreso: ',
+                                                                        style: GoogleFonts.lexendDeca(
+                                                                            fontSize:
+                                                                                size.iScreen(1.8),
+                                                                            fontWeight: FontWeight.normal,
+                                                                            color: Colors.grey)),
+                                                                    Container(
+                                                                      // width: size.wScreen(100.0),
+                                                                      child: Text(
+                                                                          '${visitante['bitTipoIngreso']}',
+                                                                          style:
+                                                                              GoogleFonts.lexendDeca(
+                                                                            fontSize:
+                                                                                size.iScreen(1.8),
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            // color: Colors.grey
+                                                                          )),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              SizedBox(
+                                                                height: size
+                                                                    .iScreen(
+                                                                        1.0),
+                                                              ),
 
                                                               Row(
                                                                 children: [
@@ -2008,20 +2017,11 @@ class _ListaBitacoraState extends State<ListaBitacora> {
                                                                                 GestureDetector(
                                                                                   onTap: () {
                                                                                     //  Navigator.pop(context);
-                            //====================//
+                                                                                    //====================//
 
-  // print('${visitante["bitId"]}&rucempresa=${_user.getUsuarioInfo!.rucempresa}');
+                                                                                    // print('${visitante["bitId"]}&rucempresa=${_user.getUsuarioInfo!.rucempresa}');
 
-
-
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ViewsPDFs(
-                                      infoPdf:'https://backsafe.neitor.com/api/reportes/bitacora_individual?bitId=${visitante["bitId"]}&rucempresa=${user.getUsuarioInfo!.rucempresa}',
-                                       labelPdf: 'Visita.pdf')));
-                                     
+                                                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewsPDFs(infoPdf: 'https://backsafe.neitor.com/api/reportes/bitacora_individual?bitId=${visitante["bitId"]}&rucempresa=${user.getUsuarioInfo!.rucempresa}', labelPdf: 'Visita.pdf')));
                                                                                   },
                                                                                   child: Container(
                                                                                     decoration: BoxDecoration(
@@ -2338,39 +2338,48 @@ class _ListaBitacoraState extends State<ListaBitacora> {
                                                               size.wScreen(100),
                                                           child: Column(
                                                             children: [
-                                                                                 //***********************************************/
-                                            SizedBox(
-                                              height: size.iScreen(1.0),
-                                            ),
-                                            //*****************************************/
-                                             SizedBox(
-                                              width: size.wScreen(100.0),
-                                              child: Row(
-                                                children: [
-                                                  Text('Tipo de Ingreso: ',
-                                                      style: GoogleFonts.lexendDeca(
-                                                          fontSize: size.iScreen(1.8),
-                                                          fontWeight: FontWeight.normal,
-                                                          color: Colors.grey)),
-                                                            Container(
-                                              // width: size.wScreen(100.0),
-                                              child: Text(
-                                                  '${visitante['bitTipoIngreso']}',
-                                                  style: GoogleFonts.lexendDeca(
-                                                      fontSize: size.iScreen(1.8),
-                                                      fontWeight: FontWeight.bold,
-                                                      // color: Colors.grey
-                                                      )),
-                                            ),
-                                                ],
-                                              ),
-                                            ),
-              
-                                          
-                                          
-                                            SizedBox(
-                                              height: size.iScreen(1.0),
-                                            ),
+                                                              //***********************************************/
+                                                              SizedBox(
+                                                                height: size
+                                                                    .iScreen(
+                                                                        1.0),
+                                                              ),
+                                                              //*****************************************/
+                                                              SizedBox(
+                                                                width: size
+                                                                    .wScreen(
+                                                                        100.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                        'Tipo de Ingreso: ',
+                                                                        style: GoogleFonts.lexendDeca(
+                                                                            fontSize:
+                                                                                size.iScreen(1.8),
+                                                                            fontWeight: FontWeight.normal,
+                                                                            color: Colors.grey)),
+                                                                    Container(
+                                                                      // width: size.wScreen(100.0),
+                                                                      child: Text(
+                                                                          '${visitante['bitTipoIngreso']}',
+                                                                          style:
+                                                                              GoogleFonts.lexendDeca(
+                                                                            fontSize:
+                                                                                size.iScreen(1.8),
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            // color: Colors.grey
+                                                                          )),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              SizedBox(
+                                                                height: size
+                                                                    .iScreen(
+                                                                        1.0),
+                                                              ),
 
                                                               Row(
                                                                 children: [
@@ -2455,16 +2464,7 @@ class _ListaBitacoraState extends State<ListaBitacora> {
                                                                                 const Spacer(),
                                                                                 GestureDetector(
                                                                                   onTap: () {
-
-
-                                                                                    
-
-                                                                                    Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ViewsPDFs(
-                                      infoPdf:'https://backsafe.neitor.com/api/reportes/bitacora_individual?bitId=${visitante["bitId"]}&rucempresa=${user.getUsuarioInfo!.rucempresa}',
-                                       labelPdf: 'Visita.pdf')));
+                                                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewsPDFs(infoPdf: 'https://backsafe.neitor.com/api/reportes/bitacora_individual?bitId=${visitante["bitId"]}&rucempresa=${user.getUsuarioInfo!.rucempresa}', labelPdf: 'Visita.pdf')));
                                                                                   },
                                                                                   child: Container(
                                                                                     decoration: BoxDecoration(
@@ -2559,7 +2559,7 @@ class _ListaBitacoraState extends State<ListaBitacora> {
                                                                         ),
                                                                         SizedBox(
                                                                           width:
-                                                                              size.wScreen(75),
+                                                                              size.wScreen(73),
                                                                           child:
                                                                               Text(
                                                                             visitante["bitResApellidos"].isEmpty || visitante["bitResApellidos"] != null
