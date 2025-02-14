@@ -329,584 +329,543 @@ class _ListaMultasSupervisorState extends State<ListaMultasSupervisor> {
 
                                     //======================================//
 
-                                    return 
-                                     multas['nomEstado'] != 'ANULADA' ?
-                                    
-                                    
-                                    Slidable(
-                                      startActionPane: ActionPane(
-                                        motion: const ScrollMotion(),
-                                        children: [
-                                          //               multas['nomEstado'] == 'EN PROCESO'
-                                          //                && multas['nomPorcentaje']=='10'
+                                    return multas['nomEstado'] != 'ANULADA'
+                                        ? Slidable(
+                                            startActionPane: ActionPane(
+                                              motion: const ScrollMotion(),
+                                              children: [
+                                                //               multas['nomEstado'] == 'EN PROCESO'
+                                                //                && multas['nomPorcentaje']=='10'
 
-                                          //                   ? SlidableAction(
-                                          //                       backgroundColor: tercearyColor,
-                                          //                       foregroundColor: Colors.white,
-                                          //                       icon: Icons.add,
-                                          //                       label: 'Turno',
-                                          //                       onPressed:
-                                          //                            multas['nomDetalle'] =='ABANDONO DE PUESTO' ||
-                                          //                           multas['nomDetalle'] =='ESTADO ETILICO O ALIENTO A LICOR' ||
-                                          //                           multas['nomDetalle'] =='FALTA INJUSTIFICADA'?
-                                          //                           (context) async {
-                                          //                         // ===================================================//
-                                          //                         final _control=context.read<TurnoExtraController>();
-                                          //                         final _controlFecha=context.read<AusenciasController>();
-                                          //                         _control.resetValuesTurnoExtra();
-                                          //                          _control.setIdMulta(multas['nomId'].toString());
-                                          //                         // ===================================================//
+                                                //                   ? SlidableAction(
+                                                //                       backgroundColor: tercearyColor,
+                                                //                       foregroundColor: Colors.white,
+                                                //                       icon: Icons.add,
+                                                //                       label: 'Turno',
+                                                //                       onPressed:
+                                                //                            multas['nomDetalle'] =='ABANDONO DE PUESTO' ||
+                                                //                           multas['nomDetalle'] =='ESTADO ETILICO O ALIENTO A LICOR' ||
+                                                //                           multas['nomDetalle'] =='FALTA INJUSTIFICADA'?
+                                                //                           (context) async {
+                                                //                         // ===================================================//
+                                                //                         final _control=context.read<TurnoExtraController>();
+                                                //                         final _controlFecha=context.read<AusenciasController>();
+                                                //                         _control.resetValuesTurnoExtra();
+                                                //                          _control.setIdMulta(multas['nomId'].toString());
+                                                //                         // ===================================================//
 
-                                          //                    await  _control.buscaIdPersona(multas['nomIdPer'].toString());
-                                          //                    final _fechaDeMulta=multas['nomFecha'].toString().substring(0,10);
-                                          //                     print('LA _fechaDeMulta :$_fechaDeMulta');
-                                          //                       Map<String,dynamic>_fecha={};
-                                          //                       Map<String, dynamic> _itemTurnoPuesto={};
-                                          //                     if (_control.getListaIdPersona.isNotEmpty) {
-                                          //                         bool _isFecha=false;
-                                          //                        String _labelFecha='';
-                                          //                        _fecha={};
-                                          //                             _itemTurnoPuesto={};
-                                          //                       for (var itemTurno in _control.getListaIdPersona['perTurno']) {
+                                                //                    await  _control.buscaIdPersona(multas['nomIdPer'].toString());
+                                                //                    final _fechaDeMulta=multas['nomFecha'].toString().substring(0,10);
+                                                //                     print('LA _fechaDeMulta :$_fechaDeMulta');
+                                                //                       Map<String,dynamic>_fecha={};
+                                                //                       Map<String, dynamic> _itemTurnoPuesto={};
+                                                //                     if (_control.getListaIdPersona.isNotEmpty) {
+                                                //                         bool _isFecha=false;
+                                                //                        String _labelFecha='';
+                                                //                        _fecha={};
+                                                //                             _itemTurnoPuesto={};
+                                                //                       for (var itemTurno in _control.getListaIdPersona['perTurno']) {
 
-                                          //                         // print('LA DATA ITEM :$itemTurno');
-                                          //                          for (var item in itemTurno['fechasConsultaDB']) {
-                                          //                               //  print(' $_fechaDeMulta ==> DESDE :${item['desde']} - HASTA :${item['hasta']}');
-                                          //                                if(item['desde'].toString().substring(0,10)==_fechaDeMulta){
-                                          //                                     _labelFecha=item['desde'];
-                                          //                                    _isFecha=true;
-                                          //                                     print(' $_fechaDeMulta ==> DESDE :${item['desde'].toString().substring(0,10)} - HASTA :${item['hasta'].toString().substring(0,10)}');
-                                          //                                       _fecha={};
-                                          //                                         _fecha ={
-                                          //         "desde": "${item['desde']}",
-                                          //         "hasta": "${item['hasta']}",
-                                          //         // "id": "${item['id']}",
-                                          //         // "isSelect":false
-                                          //       };
+                                                //                         // print('LA DATA ITEM :$itemTurno');
+                                                //                          for (var item in itemTurno['fechasConsultaDB']) {
+                                                //                               //  print(' $_fechaDeMulta ==> DESDE :${item['desde']} - HASTA :${item['hasta']}');
+                                                //                                if(item['desde'].toString().substring(0,10)==_fechaDeMulta){
+                                                //                                     _labelFecha=item['desde'];
+                                                //                                    _isFecha=true;
+                                                //                                     print(' $_fechaDeMulta ==> DESDE :${item['desde'].toString().substring(0,10)} - HASTA :${item['hasta'].toString().substring(0,10)}');
+                                                //                                       _fecha={};
+                                                //                                         _fecha ={
+                                                //         "desde": "${item['desde']}",
+                                                //         "hasta": "${item['hasta']}",
+                                                //         // "id": "${item['id']}",
+                                                //         // "isSelect":false
+                                                //       };
 
-                                          //  _itemTurnoPuesto={
-                                          //         "id": itemTurno['id'].toString(),
-                                          //         "idCliente":itemTurno['idClienteIngreso'],
-                                          //         "ruccliente":itemTurno['docClienteIngreso'],
-                                          //         "razonsocial": itemTurno['clienteIngreso'],
-                                          //         "ubicacion": itemTurno['clienteUbicacionIngreso'],
-                                          //         "puesto":itemTurno['puestoIngreso']
+                                                //  _itemTurnoPuesto={
+                                                //         "id": itemTurno['id'].toString(),
+                                                //         "idCliente":itemTurno['idClienteIngreso'],
+                                                //         "ruccliente":itemTurno['docClienteIngreso'],
+                                                //         "razonsocial": itemTurno['clienteIngreso'],
+                                                //         "ubicacion": itemTurno['clienteUbicacionIngreso'],
+                                                //         "puesto":itemTurno['puestoIngreso']
 
-                                          //       };
+                                                //       };
 
-                                          //                                   break;
-                                          //                                   }
-                                          //                               //     else{
-                                          //                               //       _isFecha=false;
-                                          //                               //         _labelFecha=_fechaDeMulta;
-                                          //                               //     //  print('NO EXISTE FECHA: $_labelFecha');
+                                                //                                   break;
+                                                //                                   }
+                                                //                               //     else{
+                                                //                               //       _isFecha=false;
+                                                //                               //         _labelFecha=_fechaDeMulta;
+                                                //                               //     //  print('NO EXISTE FECHA: $_labelFecha');
 
-                                          //                               //  }
-                                          //                          }
+                                                //                               //  }
+                                                //                          }
 
-                                          //                     }
-                                          //                     if (_isFecha==true) {
+                                                //                     }
+                                                //                     if (_isFecha==true) {
 
-                                          //                        print('DATA $_itemTurnoPuesto ');
-                                          //                        _controlFecha.setFechaValida(_fecha);
-                                          //                                 // ===================================================//
+                                                //                        print('DATA $_itemTurnoPuesto ');
+                                                //                        _controlFecha.setFechaValida(_fecha);
+                                                //                                 // ===================================================//
 
-                                          //                       //  _control.resetValuesTurnoExtra();
-                                          //                        _control.buscaLstaDataJefeOperaciones('');
+                                                //                       //  _control.resetValuesTurnoExtra();
+                                                //                        _control.buscaLstaDataJefeOperaciones('');
 
-                                          //                       _control.setIdCliente(int.parse(_itemTurnoPuesto['idCliente'].toString()));
-                                          //                       _control.setCedulaCliente(_itemTurnoPuesto['ruccliente']);
-                                          //                       _control.setNombreCliente(_itemTurnoPuesto['razonsocial']);
-                                          //                       _control.setLabelINuevoPuesto(_itemTurnoPuesto['puesto']);
-                                          //                       _control.setLabelMotivoTurnoExtra(multas['nomDetalle']);
-                                          //                       _control.setListTurPuesto(_itemTurnoPuesto);
-                                          //                       _control.onNumeroDiasChange('1');
+                                                //                       _control.setIdCliente(int.parse(_itemTurnoPuesto['idCliente'].toString()));
+                                                //                       _control.setCedulaCliente(_itemTurnoPuesto['ruccliente']);
+                                                //                       _control.setNombreCliente(_itemTurnoPuesto['razonsocial']);
+                                                //                       _control.setLabelINuevoPuesto(_itemTurnoPuesto['puesto']);
+                                                //                       _control.setLabelMotivoTurnoExtra(multas['nomDetalle']);
+                                                //                       _control.setListTurPuesto(_itemTurnoPuesto);
+                                                //                       _control.onNumeroDiasChange('1');
 
-                                          //                         //===================================================//
-                                          //                               // NotificatiosnService.showSnackBarDanger('SI EXISTE FECHA $_labelFecha');
-                                          //                       // Navigator.pushNamed( context, 'creaTurnoExtra',arguments: 'EXTRA');
-                                          //                               // _isFecha==false;
-                                          //                        // ===================================================//
+                                                //                         //===================================================//
+                                                //                               // NotificatiosnService.showSnackBarDanger('SI EXISTE FECHA $_labelFecha');
+                                                //                       // Navigator.pushNamed( context, 'creaTurnoExtra',arguments: 'EXTRA');
+                                                //                               // _isFecha==false;
+                                                //                        // ===================================================//
 
-                                          //                       _modalCrearTurno(size);
+                                                //                       _modalCrearTurno(size);
 
-                                          //                         // ===================================================//
-                                          //                           } else{
+                                                //                         // ===================================================//
+                                                //                           } else{
 
-                                          //                               // NotificatiosnService.showSnackBarError('NO PUEDE CREAR TURNO PARA ESTA FECHA $_fechaDeMulta');
-                                          //                               NotificatiosnService.showSnackBarError('NO PUEDE CREAR TURNO EL DIA DE HOY');
-                                          //                           }
+                                                //                               // NotificatiosnService.showSnackBarError('NO PUEDE CREAR TURNO PARA ESTA FECHA $_fechaDeMulta');
+                                                //                               NotificatiosnService.showSnackBarError('NO PUEDE CREAR TURNO EL DIA DE HOY');
+                                                //                           }
 
-                                          //                     }
+                                                //                     }
 
-                                          //                         //===================================================//
-                                          //                       }
-                                          //                       :null,
-                                          //                     )
-                                          //                   : Container(),
+                                                //                         //===================================================//
+                                                //                       }
+                                                //                       :null,
+                                                //                     )
+                                                //                   : Container(),
 
-                                          multas['nomEstado'] == 'EN PROCESO' &&
-                                                  multas['nomUser'] ==
-                                                      widget.user!.usuario
-                                              ? SlidableAction(
-                                                  backgroundColor:
-                                                      Colors.purple,
-                                                  foregroundColor: Colors.white,
-                                                  icon: Icons.edit,
-                                                  label: 'Editar',
-                                                  onPressed: (context) {
-                                                    // // ===================================================//
-                                                    // multasControler
-                                                    //     .resetValuesMulta();
-                                                    // multasControler
-                                                    //     .getInfomacionMulta(multas);
-                                                    // // ===================================================//
-                                                    showDialog(
-                                                        context: context,
-                                                        barrierDismissible:
-                                                            true,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return Dialog(
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20.0)),
-                                                            child: Container(
-                                                              constraints: BoxConstraints(
-                                                                  maxHeight: size
-                                                                      .wScreen(
-                                                                          60.0)),
-                                                              child: Padding(
-                                                                padding: EdgeInsets
-                                                                    .all(size
-                                                                        .iScreen(
-                                                                            3.0)),
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                        '¿Desea anular Multa?',
-                                                                        style: GoogleFonts
-                                                                            .lexendDeca(
-                                                                          fontSize:
-                                                                              size.iScreen(2.0),
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          // color: Colors.white,
-                                                                        )),
-                                                                    SizedBox(
-                                                                      height: size
-                                                                          .iScreen(
-                                                                              2.0),
-                                                                    ),
-                                                                    ListTile(
-                                                                      tileColor:
-                                                                          Colors
-                                                                              .grey[200],
-                                                                      leading: const Icon(
-                                                                          Icons
-                                                                              .do_disturb_alt_outlined,
-                                                                          color:
-                                                                              Colors.red),
-                                                                      title:
+                                                multas['nomEstado'] ==
+                                                            'EN PROCESO' &&
+                                                        multas['nomUser'] ==
+                                                            widget.user!.usuario
+                                                    ? SlidableAction(
+                                                        backgroundColor:
+                                                            Colors.purple,
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                        icon: Icons.edit,
+                                                        label: 'Editar',
+                                                        onPressed: (context) {
+                                                          // // ===================================================//
+                                                          // multasControler
+                                                          //     .resetValuesMulta();
+                                                          // multasControler
+                                                          //     .getInfomacionMulta(multas);
+                                                          // // ===================================================//
+                                                          showDialog(
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  true,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return Dialog(
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              20.0)),
+                                                                  child:
+                                                                      Container(
+                                                                    constraints:
+                                                                        BoxConstraints(
+                                                                            maxHeight:
+                                                                                size.wScreen(60.0)),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsets.all(
+                                                                          size.iScreen(
+                                                                              3.0)),
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.min,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
                                                                           Text(
-                                                                        "ANULAR",
-                                                                        style: GoogleFonts
-                                                                            .lexendDeca(
-                                                                          fontSize:
-                                                                              size.iScreen(2.0),
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          // color: Colors.white,
-                                                                        ),
+                                                                              '¿Desea anular Multa?',
+                                                                              style: GoogleFonts.lexendDeca(
+                                                                                fontSize: size.iScreen(2.0),
+                                                                                fontWeight: FontWeight.bold,
+                                                                                // color: Colors.white,
+                                                                              )),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                size.iScreen(2.0),
+                                                                          ),
+                                                                          ListTile(
+                                                                            tileColor:
+                                                                                Colors.grey[200],
+                                                                            leading:
+                                                                                const Icon(Icons.do_disturb_alt_outlined, color: Colors.red),
+                                                                            title:
+                                                                                Text(
+                                                                              "ANULAR",
+                                                                              style: GoogleFonts.lexendDeca(
+                                                                                fontSize: size.iScreen(2.0),
+                                                                                fontWeight: FontWeight.bold,
+                                                                                // color: Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                            // trailing: const Icon(Icons.chevron_right_outlined),
+                                                                            onTap:
+                                                                                () async {
+                                                                              // ===================================================//
+                                                                              multasControler.resetValuesMulta();
+                                                                              multasControler.getInfomacionMulta(multas);
+                                                                              // ===================================================//
+                                                                              providers.setLabelNombreEstadoMulta('ANULADA');
+                                                                              providers.editarMultaGuardia(context);
+                                                                              Navigator.pop(context);
+                                                                              // _modalTerminosCondiciones(size, homeController);
+                                                                            },
+                                                                          )
+                                                                        ],
                                                                       ),
-                                                                      // trailing: const Icon(Icons.chevron_right_outlined),
-                                                                      onTap:
-                                                                          () async {
-                                                                        // ===================================================//
-                                                                        multasControler
-                                                                            .resetValuesMulta();
-                                                                        multasControler
-                                                                            .getInfomacionMulta(multas);
-                                                                        // ===================================================//
-                                                                        providers
-                                                                            .setLabelNombreEstadoMulta('ANULADA');
-                                                                        providers
-                                                                            .editarMultaGuardia(context);
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                        // _modalTerminosCondiciones(size, homeController);
-                                                                      },
-                                                                    )
-                                                                  ],
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+
+                                                          //===================================================//
+                                                        },
+                                                      )
+                                                    : Container(),
+                                              ],
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                // Navigator.pushNamed(context, 'detalleMultaGuardia');
+                                                final control = context.read<
+                                                    MultasGuardiasContrtoller>();
+                                                control
+                                                    .setLabelNombreEstadoMulta(
+                                                        multas['nomEstado']);
+                                                control.setInfoMultaObtenida(
+                                                    multas);
+
+                                                control.buscaIdTurnoAsignado(
+                                                    multas['idTurno']
+                                                        .toString()); //idTurno
+
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            DetalleMultaGuardiaPage(
+                                                              infoMultaGuardia:
+                                                                  multas,
+                                                              user: widget.user,
+                                                            )))).then((value) {
+                                                  // final _control = context.read<
+                                                  //     MultasGuardiasContrtoller>();
+
+                                                  multasControler
+                                                      .resetValuesMulta();
+
+                                                  multasControler
+                                                      .getTodasLasMultasGuardia(
+                                                          '', 'false');
+                                                });
+                                              },
+                                              child: ClipRRect(
+                                                child: Card(
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: size.iScreen(0.5)),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: size
+                                                                .iScreen(1.0),
+                                                            vertical: size
+                                                                .iScreen(0.5)),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      boxShadow: const <BoxShadow>[
+                                                        BoxShadow(
+                                                            color:
+                                                                Colors.black54,
+                                                            blurRadius: 1.0,
+                                                            offset: Offset(
+                                                                0.0, 1.0))
+                                                      ],
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                // color: Colors.red,
+                                                                margin: EdgeInsets.only(
+                                                                    top: size
+                                                                        .iScreen(
+                                                                            0.5),
+                                                                    bottom: size
+                                                                        .iScreen(
+                                                                            0.0)),
+                                                                width: size
+                                                                    .wScreen(
+                                                                        100.0),
+                                                                child: Text(
+                                                                  '${multas['nomNombrePer']}',
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize:
+                                                                          size.iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          );
-                                                        });
-
-                                                    //===================================================//
-                                                  },
-                                                )
-                                              : Container(),
-                                        ],
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          // Navigator.pushNamed(context, 'detalleMultaGuardia');
-                                          final control = context.read<
-                                              MultasGuardiasContrtoller>();
-                                          control.setLabelNombreEstadoMulta(
-                                              multas['nomEstado']);
-                                          control.setInfoMultaObtenida(multas);
-
-                                          control.buscaIdTurnoAsignado(
-                                              multas['idTurno']
-                                                  .toString()); //idTurno
-
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      DetalleMultaGuardiaPage(
-                                                        infoMultaGuardia:
-                                                            multas,
-                                                        user: widget.user,
-                                                      )))).then((value) {
-                                            // final _control = context.read<
-                                            //     MultasGuardiasContrtoller>();
-
-                                            multasControler.resetValuesMulta();
-
-                                            multasControler
-                                                .getTodasLasMultasGuardia(
-                                                    '', 'false');
-                                          });
-                                        },
-                                        child: ClipRRect(
-                                          child: Card(
-                                            child: Container(
-                                              margin: EdgeInsets.only(
-                                                  top: size.iScreen(0.5)),
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: size.iScreen(1.0),
-                                                  vertical: size.iScreen(0.5)),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                boxShadow: const <BoxShadow>[
-                                                  BoxShadow(
-                                                      color: Colors.black54,
-                                                      blurRadius: 1.0,
-                                                      offset: Offset(0.0, 1.0))
-                                                ],
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          // color: Colors.red,
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: size
-                                                                      .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                          width: size
-                                                              .wScreen(100.0),
-                                                          child: Text(
-                                                            '${multas['nomNombrePer']}',
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: GoogleFonts.lexendDeca(
-                                                                fontSize: size
-                                                                    .iScreen(
-                                                                        1.8),
-                                                                color: Colors
-                                                                    .black87,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                              Row(
+                                                                children: [
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        top: size.iScreen(
+                                                                            0.5),
+                                                                        bottom:
+                                                                            size.iScreen(0.0)),
+                                                                    // width: size.wScreen(100.0),
+                                                                    child: Text(
+                                                                      'Motivo:',
+                                                                      style: GoogleFonts.lexendDeca(
+                                                                          fontSize: size.iScreen(
+                                                                              1.5),
+                                                                          color: Colors
+                                                                              .black87,
+                                                                          fontWeight:
+                                                                              FontWeight.normal),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    // color: Colors.red,
+                                                                    margin: EdgeInsets.only(
+                                                                        top: size.iScreen(
+                                                                            0.5),
+                                                                        bottom:
+                                                                            size.iScreen(0.0)),
+                                                                    width: size
+                                                                        .wScreen(
+                                                                            50.0),
+                                                                    child: Text(
+                                                                      '${multas['nomDetalle']}',
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: GoogleFonts.lexendDeca(
+                                                                          fontSize: size.iScreen(
+                                                                              1.5),
+                                                                          color: Colors
+                                                                              .black87,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        top: size.iScreen(
+                                                                            0.5),
+                                                                        bottom:
+                                                                            size.iScreen(0.0)),
+                                                                    // width: size.wScreen(100.0),
+                                                                    child: Text(
+                                                                      'Multa: ',
+                                                                      style: GoogleFonts.lexendDeca(
+                                                                          fontSize: size.iScreen(
+                                                                              1.5),
+                                                                          color: Colors
+                                                                              .black87,
+                                                                          fontWeight:
+                                                                              FontWeight.normal),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        top: size.iScreen(
+                                                                            0.5),
+                                                                        bottom:
+                                                                            size.iScreen(0.0)),
+                                                                    // width: size.wScreen(100.0),
+                                                                    child: Text(
+                                                                      '${multas['nomPorcentaje']} %',
+                                                                      style: GoogleFonts.lexendDeca(
+                                                                          fontSize: size.iScreen(
+                                                                              1.5),
+                                                                          color: Colors
+                                                                              .black87,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        top: size.iScreen(
+                                                                            0.5),
+                                                                        bottom:
+                                                                            size.iScreen(0.0)),
+                                                                    // width: size.wScreen(100.0),
+                                                                    child: Text(
+                                                                      'Asignado por: ',
+                                                                      style: GoogleFonts.lexendDeca(
+                                                                          fontSize: size.iScreen(
+                                                                              1.5),
+                                                                          color: Colors
+                                                                              .black87,
+                                                                          fontWeight:
+                                                                              FontWeight.normal),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        top: size.iScreen(
+                                                                            0.5),
+                                                                        bottom:
+                                                                            size.iScreen(0.0)),
+                                                                    // width: size.wScreen(100.0),
+                                                                    child: Text(
+                                                                      ' ${multas['nomUser'].toString().toUpperCase()}',
+                                                                      style: GoogleFonts.lexendDeca(
+                                                                          fontSize: size.iScreen(
+                                                                              1.5),
+                                                                          color: Colors
+                                                                              .black87,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        top: size.iScreen(
+                                                                            0.5),
+                                                                        bottom:
+                                                                            size.iScreen(0.0)),
+                                                                    // width: size.wScreen(100.0),
+                                                                    child: Text(
+                                                                      'Fecha de registro: ',
+                                                                      style: GoogleFonts.lexendDeca(
+                                                                          fontSize: size.iScreen(
+                                                                              1.5),
+                                                                          color: Colors
+                                                                              .black87,
+                                                                          fontWeight:
+                                                                              FontWeight.normal),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        top: size.iScreen(
+                                                                            0.5),
+                                                                        bottom:
+                                                                            size.iScreen(0.0)),
+                                                                    // width: size.wScreen(100.0),
+                                                                    child: Text(
+                                                                      //   multas['nomFecReg']!
+                                                                      //       // .toLocal()
+                                                                      //       .toString()
+                                                                      //       .replaceAll(
+                                                                      //           ".000Z", "")
+                                                                      //       .replaceAll(
+                                                                      //           ".000", "")
+                                                                      //       .replaceAll(
+                                                                      //           "T", " "),
+                                                                      // // child: Text(
+                                                                      // //   _fechaUTC,
+                                                                      fechaLocal,
+                                                                      style: GoogleFonts.lexendDeca(
+                                                                          fontSize: size.iScreen(
+                                                                              1.5),
+                                                                          color: Colors
+                                                                              .black87,
+                                                                          fontWeight:
+                                                                              FontWeight.normal),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
-                                                        Row(
+                                                        Column(
                                                           children: [
-                                                            Container(
-                                                              margin: EdgeInsets.only(
-                                                                  top: size
+                                                            Text(
+                                                              'Estado',
+                                                              style: GoogleFonts.lexendDeca(
+                                                                  fontSize: size
                                                                       .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                              // width: size.wScreen(100.0),
-                                                              child: Text(
-                                                                'Motivo:',
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.5),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal),
-                                                              ),
+                                                                          1.6),
+                                                                  color: Colors
+                                                                      .black87,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal),
                                                             ),
-                                                            Container(
-                                                              // color: Colors.red,
-                                                              margin: EdgeInsets.only(
-                                                                  top: size
-                                                                      .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                              width:
-                                                                  size.wScreen(
-                                                                      50.0),
-                                                              child: Text(
-                                                                '${multas['nomDetalle']}',
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.5),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                            Text(
+                                                              '${multas['nomEstado']}',
+                                                              style: GoogleFonts
+                                                                  .lexendDeca(
+                                                                fontSize: size
+                                                                    .iScreen(
+                                                                        1.4),
+                                                                color: multas[
+                                                                            'nomEstado'] ==
+                                                                        'APELACION'
+                                                                    ? secondaryColor
+                                                                    : multas['nomEstado'] ==
+                                                                            'EN PROCESO'
+                                                                        ? tercearyColor
+                                                                        : multas['nomEstado'] ==
+                                                                                'ANULADA'
+                                                                            ? Colors.red
+                                                                            : multas['nomEstado'] == 'ASIGNADA'
+                                                                                ? primaryColor
+                                                                                : Colors.grey,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
                                                               ),
                                                             ),
                                                           ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Container(
-                                                              margin: EdgeInsets.only(
-                                                                  top: size
-                                                                      .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                              // width: size.wScreen(100.0),
-                                                              child: Text(
-                                                                'Multa: ',
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.5),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              margin: EdgeInsets.only(
-                                                                  top: size
-                                                                      .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                              // width: size.wScreen(100.0),
-                                                              child: Text(
-                                                                '${multas['nomPorcentaje']} %',
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.5),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Container(
-                                                              margin: EdgeInsets.only(
-                                                                  top: size
-                                                                      .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                              // width: size.wScreen(100.0),
-                                                              child: Text(
-                                                                'Asignado por: ',
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.5),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              margin: EdgeInsets.only(
-                                                                  top: size
-                                                                      .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                              // width: size.wScreen(100.0),
-                                                              child: Text(
-                                                                ' ${multas['nomUser'].toString().toUpperCase()}',
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.5),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Container(
-                                                              margin: EdgeInsets.only(
-                                                                  top: size
-                                                                      .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                              // width: size.wScreen(100.0),
-                                                              child: Text(
-                                                                'Fecha de registro: ',
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.5),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              margin: EdgeInsets.only(
-                                                                  top: size
-                                                                      .iScreen(
-                                                                          0.5),
-                                                                  bottom: size
-                                                                      .iScreen(
-                                                                          0.0)),
-                                                              // width: size.wScreen(100.0),
-                                                              child: Text(
-                                                                //   multas['nomFecReg']!
-                                                                //       // .toLocal()
-                                                                //       .toString()
-                                                                //       .replaceAll(
-                                                                //           ".000Z", "")
-                                                                //       .replaceAll(
-                                                                //           ".000", "")
-                                                                //       .replaceAll(
-                                                                //           "T", " "),
-                                                                // // child: Text(
-                                                                // //   _fechaUTC,
-                                                                fechaLocal,
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.5),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
+                                                        )
                                                       ],
                                                     ),
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        'Estado',
-                                                        style: GoogleFonts
-                                                            .lexendDeca(
-                                                                fontSize: size
-                                                                    .iScreen(
-                                                                        1.6),
-                                                                color: Colors
-                                                                    .black87,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal),
-                                                      ),
-                                                      Text(
-                                                        '${multas['nomEstado']}',
-                                                        style: GoogleFonts
-                                                            .lexendDeca(
-                                                          fontSize:
-                                                              size.iScreen(1.4),
-                                                          color: multas[
-                                                                      'nomEstado'] ==
-                                                                  'APELACION'
-                                                              ? secondaryColor
-                                                              : multas['nomEstado'] ==
-                                                                      'EN PROCESO'
-                                                                  ? tercearyColor
-                                                                  : multas['nomEstado'] ==
-                                                                          'ANULADA'
-                                                                      ? Colors
-                                                                          .red
-                                                                      : multas['nomEstado'] ==
-                                                                              'ASIGNADA'
-                                                                          ? primaryColor
-                                                                          : Colors
-                                                                              .grey,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                    ):Container();
+                                          )
+                                        : Container();
 
                                     //   },
                                     // );

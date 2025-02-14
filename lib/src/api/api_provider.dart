@@ -3591,5 +3591,76 @@ class ApiProvider {
     }
   }
 
-//*******************************//
+//**************** INICIA TURNO ***************//
+  Future startTurno(Map<String, dynamic> data, String token) async {
+    try {
+      final uri = Uri.parse('$_dirURL/registros/iniciar_turno');
+      final headers = {
+        'Content-Type': 'application/json',
+        "x-auth-token": token,
+      };
+      // print('data a enviar =======>: $data');
+      Map<String, dynamic> body = data;
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      final dataResp = await _http.post(
+        uri,
+        headers: headers,
+        body: jsonBody,
+        encoding: encoding,
+      );
+      final respo = jsonDecode(dataResp.body);
+
+      // print('EL verifiv  API :${respo}');
+      // print('EL code  API :${dataResp.statusCode}');
+
+      if (dataResp.statusCode != 200) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 200) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return respo;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+//**************** FINALIZA TURNO ***************//
+
+  Future endTurno(Map<String, dynamic> data, String token) async {
+    try {
+      final uri = Uri.parse('$_dirURL/registros/finalizar_turno');
+      final headers = {
+        'Content-Type': 'application/json',
+        "x-auth-token": token,
+      };
+
+      final jsonBody = jsonEncode(data); // Codifica a JSON (simplificado)
+
+      final dataResp = await _http.put(
+        // Usa http.put en lugar de post
+        uri,
+        headers: headers,
+        body: jsonBody,
+      );
+
+      final respo = jsonDecode(dataResp.body);
+
+      if (dataResp.statusCode != 200) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 200) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return respo;
+      }
+      return null; // Retorno en caso de que no se cumpla la condición del statusCode 200
+    } catch (e) {
+      print("Error en la petición PUT: $e"); // Imprime el error para debug
+      return null;
+    }
+  }
 }

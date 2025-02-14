@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -95,24 +99,24 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     final serviceSocket = Provider.of<SocketService>(context, listen: false);
     final homeController = Provider.of<HomeController>(context, listen: false);
     // ===================== VERIFICO DE QUE DISPOSITIVO EL GUARDIA INICIA TURNO  ================//
-//     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-//     if (kIsWeb) {
-//       WebBrowserInfo webBrowserInfo = await deviceInfo.webBrowserInfo;
-//       // print('Running on ${webBrowserInfo.userAgent}');
-//       marcaMovil = '${webBrowserInfo.userAgent}';
-//     } else if (Platform.isIOS) {
-//       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-//       // print('Running on ${iosInfo.utsname.machine}'); // e.g. "iPod7,1"
-//       marcaMovil = '${iosInfo.utsname.machine}';
-//     } else if (Platform.isAndroid) {
-//       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-//       // print('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
-//       marcaMovil = '${androidInfo.model}';
-//     } else if (Platform.isWindows) {
-// // print('Running on ${windowsInfo.toMap().toString()}');  // e.g. "Moto G (4)"
-//     }
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (kIsWeb) {
+      WebBrowserInfo webBrowserInfo = await deviceInfo.webBrowserInfo;
+      // print('Running on ${webBrowserInfo.userAgent}');
+      marcaMovil = '${webBrowserInfo.userAgent}';
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      // print('Running on ${iosInfo.utsname.machine}'); // e.g. "iPod7,1"
+      marcaMovil = '${iosInfo.utsname.machine}';
+    } else if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      // print('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
+      marcaMovil = '${androidInfo.model}';
+    } else if (Platform.isWindows) {
+// print('Running on ${windowsInfo.toMap().toString()}');  // e.g. "Moto G (4)"
+    }
 
-//   homeController.setTipoDispositivo(marcaMovil);
+    homeController.setTipoDispositivo(marcaMovil);
 // =======================================================================================//
     homeController.buscaNotificacionesMenu(context);
     homeController.buscaNotificacionesPush('');
@@ -806,7 +810,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 1.0.6',
+              'Ver: 1.0.7',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,
@@ -3621,7 +3625,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                     ProgressDialog.show(context);
                                     await valueScan.getCurrentPosition();
                                     // await valueScan.validaCodigoQRTurno(context);
-                                    await valueScan.finalizarTurno(context);
+                                    // await valueScan.finalizarTurno(context);
+                                    await valueScan.validaFinTurnoQR(context);
                                     ProgressDialog.dissmiss(context);
                                   } else {
                                     if (!mounted) return;

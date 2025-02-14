@@ -1868,68 +1868,156 @@ class HomeController extends ChangeNotifier {
 //   }
 //============================================================ VALIDA INICIA TURNO QR ===========================//
 
-  Future<void> validaTurnoQR(BuildContext context) async {
-    final serviceSocket = context.read<SocketService>();
+  // Future<void> validaTurnoQR(BuildContext context) async {
+  //   final serviceSocket = context.read<SocketService>();
+  //   final btnCtrl = context.read<BotonTurnoController>();
+  //   final infoUser = await Auth.instance.getSession();
+
+  //   final _pyloadDataIniciaTurno = {
+  //     "tabla": "registro", // info Quemada
+  //     "rucempresa": infoUser!.rucempresa, // dato del login
+  //     "rol": infoUser.rol, // dato del login
+  //     "regId": "", // va vacio
+  //     "regCodigo": infoUser.id, // _textoCodigAccesoTurno, // leer del qr
+  //     "regDocumento": "", // va vacio
+  //     "regNombres": "", // va vacio
+  //     "regPuesto": "", // va vacio
+  //     'regTerminosCondiciones': _terminosCondiciones,
+  //     "qrcliente":
+  //         _infoQRTurno, //SE AGREGA LA INFORMACION QUE SE ESCANE A QR EN LA NUEVA FORMA DEINICIAAR TURNO
+  //     "regCoordenadas": {
+  //       // tomar coordenadas
+  //       "latitud": position!.latitude,
+  //       "longitud": position!.longitude,
+  //     },
+  //     "regRegistro": "CÓDIGO",
+  //     "regDispositivo": _tipoDispositivo, // tomar coordenadas
+  //     "regEstadoIngreso": "INICIADA", // INICIADA O FINALIZADA
+  //     "regEmpresa": infoUser.rucempresa, // dato del login
+  //     "regUser": infoUser.usuario, // dato del login
+  //     "regFecReg": "", // va vacio
+  //     "Todos": "" // va vacio
+  //   };
+  //   serviceSocket.socket?.emit('client:guardarData', _pyloadDataIniciaTurno);
+  //   serviceSocket.socket?.on('server:guardadoExitoso', (data) async {
+  //     if (data['tabla'] == 'registro' &&
+  //         data['regUser'] == infoUser.usuario &&
+  //         data['regEmpresa'] == infoUser.rucempresa) {
+  //       if (data['regCodigo'] == infoUser.id.toString()) {
+  //         //========INICIO TURNO DE NUEVA NAMERA======//
+  //         btnCtrl.setTurnoBTN(true);
+  //         // btnCtrl.setTurnoBTN(true);
+  //         // setBotonTurno(true);
+  //         //====================================//
+  //         //====================================//
+  //         await Auth.instance.saveIdRegistro('${data['regId']}');
+
+  //         final datosLogin = {
+  //           "turno": true,
+  //           "user": data['regDocumento'],
+  //         };
+  //         // //========INICIO TURNO DE NUEVA NAMERA======//
+  //         // btnCtrl.setTurnoBTN(true);
+  //         // // btnCtrl.setTurnoBTN(true);
+  //         // // setBotonTurno(true);
+  //         // //====================================//
+  //         await Auth.instance.saveTurnoSessionUser(datosLogin);
+  //         // //========INICIO TURNO DE NUEVA NAMERA======//
+  //         // btnCtrl.setTurnoBTN(true);
+  //         // // btnCtrl.setTurnoBTN(true);
+  //         // // setBotonTurno(true);
+  //         // //====================================//
+  //       }
+  //     }
+  //   });
+  // }
+
+//************************* INICIA TURNO ******************************//
+  bool _isLoadTurno = false;
+  bool get isLoadTurno => _isLoadTurno;
+
+  Future validaTurnoQR(BuildContext context) async {
     final btnCtrl = context.read<BotonTurnoController>();
     final infoUser = await Auth.instance.getSession();
-
-    final _pyloadDataIniciaTurno = {
-      "tabla": "registro", // info Quemada
-      "rucempresa": infoUser!.rucempresa, // dato del login
-      "rol": infoUser.rol, // dato del login
-      "regId": "", // va vacio
-      "regCodigo": infoUser.id, // _textoCodigAccesoTurno, // leer del qr
-      "regDocumento": "", // va vacio
-      "regNombres": "", // va vacio
-      "regPuesto": "", // va vacio
-      'regTerminosCondiciones': _terminosCondiciones,
-      "qrcliente":
-          _infoQRTurno, //SE AGREGA LA INFORMACION QUE SE ESCANE A QR EN LA NUEVA FORMA DEINICIAAR TURNO
+    _isLoadTurno = true;
+    final data = {
+      "qrcliente": _infoQRTurno,
       "regCoordenadas": {
         // tomar coordenadas
         "latitud": position!.latitude,
         "longitud": position!.longitude,
       },
       "regRegistro": "CÓDIGO",
-      "regDispositivo": _tipoDispositivo, // tomar coordenadas
-      "regEstadoIngreso": "INICIADA", // INICIADA O FINALIZADA
-      "regEmpresa": infoUser.rucempresa, // dato del login
-      "regUser": infoUser.usuario, // dato del login
-      "regFecReg": "", // va vacio
-      "Todos": "" // va vacio
+      "regDispositivo": _tipoDispositivo
     };
-    serviceSocket.socket?.emit('client:guardarData', _pyloadDataIniciaTurno);
-    serviceSocket.socket?.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'registro' &&
-          data['regUser'] == infoUser.usuario &&
-          data['regEmpresa'] == infoUser.rucempresa) {
-        if (data['regCodigo'] == infoUser.id.toString()) {
-          //========INICIO TURNO DE NUEVA NAMERA======//
-          btnCtrl.setTurnoBTN(true);
-          // btnCtrl.setTurnoBTN(true);
-          // setBotonTurno(true);
-          //====================================//
-          //====================================//
-          await Auth.instance.saveIdRegistro('${data['regId']}');
+    final response = await _api.startTurno(data, infoUser!.token.toString());
+    if (response != null) {
+      _isLoadTurno = false;
+      btnCtrl.setTurnoBTN(true);
 
-          final datosLogin = {
-            "turno": true,
-            "user": data['regDocumento'],
-          };
-          // //========INICIO TURNO DE NUEVA NAMERA======//
-          // btnCtrl.setTurnoBTN(true);
-          // // btnCtrl.setTurnoBTN(true);
-          // // setBotonTurno(true);
-          // //====================================//
-          await Auth.instance.saveTurnoSessionUser(datosLogin);
-          // //========INICIO TURNO DE NUEVA NAMERA======//
-          // btnCtrl.setTurnoBTN(true);
-          // // btnCtrl.setTurnoBTN(true);
-          // // setBotonTurno(true);
-          // //====================================//
-        }
-      }
-    });
+      await Auth.instance.saveIdRegistro('${response['informacion']['regId']}');
+
+      final datosLogin = {
+        "turno": true,
+        "user": response['informacion']['regDocumento'],
+      };
+
+      await Auth.instance.saveTurnoSessionUser(datosLogin);
+      getValidaTurnoServer(context);
+
+      notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      _isLoadTurno = false;
+
+      notifyListeners();
+      return null;
+    }
+    return null;
+  }
+
+//************************* FINALIZA  TURNO ******************************//
+  bool _isLoadFinTurno = false;
+  bool get isLoadFinTurno => _isLoadFinTurno;
+
+  Future validaFinTurnoQR(BuildContext context) async {
+    final btnCtrl = context.read<BotonTurnoController>();
+    final infoUser = await Auth.instance.getSession();
+    final idRegistro = await Auth.instance.getIdRegistro();
+    _isLoadFinTurno = true;
+
+    print('QR:=====> >  $_infoQRTurno');
+
+    final data = {
+      "regId": idRegistro,
+      "qrcliente": _infoQRTurno,
+      "coordenadasFinalizar": {
+        // tomar coordenadas
+        "latitud": position!.latitude,
+        "longitud": position!.longitude,
+      },
+    };
+
+    final response = await _api.endTurno(data, infoUser!.token.toString());
+    if (response != null) {
+      _isLoadFinTurno = false;
+      btnCtrl.setTurnoBTN(false);
+      setBotonTurno(false);
+      await Auth.instance.deleteTurnoSesionUser();
+
+      // getValidaTurnoServer(context);
+
+      notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      _isLoadFinTurno = false;
+
+      notifyListeners();
+      return null;
+    }
+    return null;
   }
 
 //========================== GUARDA TOKEN DDE LA NOTIFICACION =======================//
@@ -2456,57 +2544,58 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-//==================FINALIZA TURNO ===========================//
-  Future<void> finalizarTurno(BuildContext context) async {
-    final serviceSocket = context.read<SocketService>();
-    final btnCtrl = context.read<BotonTurnoController>();
-    final infoUser = await Auth.instance.getSession();
-    final idRegistro = await Auth.instance.getIdRegistro();
+// //==================FINALIZA TURNO ===========================//
+//   Future<void> finalizarTurno(BuildContext context) async {
+//     final serviceSocket = context.read<SocketService>();
+//     final btnCtrl = context.read<BotonTurnoController>();
+//     final infoUser = await Auth.instance.getSession();
+//     final idRegistro = await Auth.instance.getIdRegistro();
 
-    final _pyloadDataFinaizaTurno = {
-      "tabla": "registro", // info Quemada
-      "rucempresa": infoUser!.rucempresa, // dato del login
-      "regId": idRegistro, // va vacio
-      "qrcliente": _infoQRTurno,
-      "coordenadasFinalizar": {
-        "latitud": position!.latitude,
-        "longitud": position!.longitude,
-      }
-    };
-    // serviceSocket.socket
-    //     ?.emit('client:actualizarData', _pyloadDataFinaizaTurno);
-    // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-    //   if (data['tabla'] == 'registro') {
-    //     //================= FINALIZO TURNO DE NUEVA FORMA ===================//
-    //      btnCtrl.setTurnoBTN(false);
+//     final _pyloadDataFinaizaTurno = {
+//       "tabla": "registro", // info Quemada
+//       "rucempresa": infoUser!.rucempresa, // dato del login
+//       "regId": idRegistro, // va vacio
+//       "qrcliente": _infoQRTurno,
+//       "coordenadasFinalizar": {
+//         "latitud": position!.latitude,
+//         "longitud": position!.longitude,
+//       }
+//     };
+//     print('EL TURNO A ENVIAR ES : $_pyloadDataFinaizaTurno');
+//     // serviceSocket.socket
+//     //     ?.emit('client:actualizarData', _pyloadDataFinaizaTurno);
+//     // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+//     //   if (data['tabla'] == 'registro') {
+//     //     //================= FINALIZO TURNO DE NUEVA FORMA ===================//
+//     //      btnCtrl.setTurnoBTN(false);
 
-    //     setBotonTurno(false);
-    //   }
-    // });
-    // serviceSocket.socket?.on('server:error', (data) async {
-    //   NotificatiosnService.showSnackBarError(data['msg']);
-    // });
+//     //     setBotonTurno(false);
+//     //   }
+//     // });
+//     // serviceSocket.socket?.on('server:error', (data) async {
+//     //   NotificatiosnService.showSnackBarError(data['msg']);
+//     // });
 
-    //================= FINALIZO TURNO DE NUEVA FORMA ===================//
-    serviceSocket.socket
-        ?.emit('client:actualizarData', _pyloadDataFinaizaTurno);
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'registro' &&
-          data['regUser'] == infoUser.usuario &&
-          data['regEmpresa'] == infoUser.rucempresa) {
-        //================= FINALIZO TURNO DE NUEVA FORMA ===================//
-        print(
-            'la info igual: ${data['tabla']} ==>   ${data['regUser']} ==  ${infoUser.usuario} &&   ${data['regEmpresa']} ==  ${infoUser.rucempresa}  ');
-        btnCtrl.setTurnoBTN(false);
-        setBotonTurno(false);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) async {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+//     //================= FINALIZO TURNO DE NUEVA FORMA ===================//
+//     serviceSocket.socket
+//         ?.emit('client:actualizarData', _pyloadDataFinaizaTurno);
+//     serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+//       if (data['tabla'] == 'registro' &&
+//           data['regUser'] == infoUser.usuario &&
+//           data['regEmpresa'] == infoUser.rucempresa) {
+//         //================= FINALIZO TURNO DE NUEVA FORMA ===================//
+//         print(
+//             'la info igual: ${data['tabla']} ==>   ${data['regUser']} ==  ${infoUser.usuario} &&   ${data['regEmpresa']} ==  ${infoUser.rucempresa}  ');
+//         btnCtrl.setTurnoBTN(false);
+//         setBotonTurno(false);
+//       }
+//     });
+//     serviceSocket.socket?.on('server:error', (data) async {
+//       NotificatiosnService.showSnackBarError(data['msg']);
+//     });
 
-    //=======================================================//
-  }
+//     //=======================================================//
+//   }
 
 //========ESTE BOTON INICIA Y FINALIZA TURNO ======//
   bool _botonTurno =

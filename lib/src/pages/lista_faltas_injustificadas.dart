@@ -106,7 +106,7 @@ class _ListaFaltasInjustificadasState extends State<ListaFaltasInjustificadas> {
                                         onChanged: (text) {
                                           // multasControler.onSearchText(text);
                                           multasControler.filtrarfaltas(text);
-                                          
+
                                           // setState(() {});
                                         },
                                         decoration: const InputDecoration(
@@ -338,7 +338,6 @@ class _ListaFaltasInjustificadasState extends State<ListaFaltasInjustificadas> {
               Expanded(
                 child: Consumer<MultasGuardiasContrtoller>(
                   builder: (_, providers, __) {
-                
                     if (providers.faltasFiltrados == null) {
                       return Center(
                         // child: CircularProgressIndicator(),
@@ -401,11 +400,11 @@ class _ListaFaltasInjustificadasState extends State<ListaFaltasInjustificadas> {
                         return valueEstadoInter.serverStatus ==
                                 ServerStatus.Online
                             ? ListView.builder(
-                                itemCount: multasControler
-                                    .faltasFiltrados.length,
+                                itemCount:
+                                    multasControler.faltasFiltrados.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  final multas = multasControler
-                                      .faltasFiltrados[index];
+                                  final multas =
+                                      multasControler.faltasFiltrados[index];
 
                                   String fechaLocal =
                                       DateUtility.fechaLocalConvert(
@@ -422,7 +421,12 @@ class _ListaFaltasInjustificadasState extends State<ListaFaltasInjustificadas> {
 
                                   //======================================//
 
-                                  return Slidable(
+                                  return
+                                      // 0804278174
+                                      // widget.user!.usuario ==
+                                      //         multas['nomNombrePer']
+                                      //     ?
+                                      Slidable(
                                     startActionPane: ActionPane(
                                       motion: const ScrollMotion(),
                                       children: [
@@ -1067,6 +1071,7 @@ class _ListaFaltasInjustificadasState extends State<ListaFaltasInjustificadas> {
                                       ),
                                     ),
                                   );
+                                  // : Container();
 
                                   //   },
                                   // );
