@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:nseguridad/firebase_options.dart';
 import 'package:nseguridad/src/controllers/actividades_asignadas_controller.dart';
 import 'package:nseguridad/src/controllers/activities_controller.dart';
@@ -37,7 +39,7 @@ import 'package:nseguridad/src/service/notification_push.dart';
 import 'package:nseguridad/src/service/notifications_service.dart';
 import 'package:nseguridad/src/service/socket_service.dart';
 import 'package:nseguridad/src/theme/themes_app.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as prov;
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -55,7 +57,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -83,45 +85,52 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return prov.MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => BotonTurnoController()),
+          prov.ChangeNotifierProvider(create: (_) => BotonTurnoController()),
 
-          ChangeNotifierProvider(create: (_) => ThemeApp()),
-          ChangeNotifierProvider(create: (_) => PushNotificationService()),
-          ChangeNotifierProvider(create: (_) => ImagenCompress()),
-          ChangeNotifierProvider(create: (_) => SocketService()),
-          ChangeNotifierProvider(create: (_) => HomeController()),
-          ChangeNotifierProvider(create: (_) => ActividadesController()),
-          ChangeNotifierProvider(create: (_) => AvisosController()),
-          ChangeNotifierProvider(create: (_) => ConsignasClientesController()),
-          ChangeNotifierProvider(create: (_) => ConsignasController()),
-          ChangeNotifierProvider(create: (_) => EstadoCuentaController()),
-          ChangeNotifierProvider(create: (_) => MultasGuardiasContrtoller()),
-          ChangeNotifierProvider(create: (_) => InformeController()),
-          ChangeNotifierProvider(create: (_) => LogisticaController()),
-          ChangeNotifierProvider(create: (_) => AvisoSalidaController()),
-          ChangeNotifierProvider(create: (_) => CambioDePuestoController()),
-          ChangeNotifierProvider(create: (_) => AusenciasController()),
-          ChangeNotifierProvider(create: (_) => TurnoExtraController()),
-          ChangeNotifierProvider(create: (_) => ActivitiesController()),
-          ChangeNotifierProvider(create: (_) => EncuestasController()),
-          ChangeNotifierProvider(create: (_) => EvaluacionesController()),
-          ChangeNotifierProvider(create: (_) => CapacitacionesController()),
-          ChangeNotifierProvider(create: (_) => SugerenciasController()),
-          ChangeNotifierProvider(
+          prov.ChangeNotifierProvider(create: (_) => ThemeApp()),
+          prov.ChangeNotifierProvider(create: (_) => PushNotificationService()),
+          prov.ChangeNotifierProvider(create: (_) => ImagenCompress()),
+          prov.ChangeNotifierProvider(create: (_) => SocketService()),
+          prov.ChangeNotifierProvider(create: (_) => HomeController()),
+          prov.ChangeNotifierProvider(create: (_) => ActividadesController()),
+          prov.ChangeNotifierProvider(create: (_) => AvisosController()),
+          prov.ChangeNotifierProvider(
+              create: (_) => ConsignasClientesController()),
+          prov.ChangeNotifierProvider(create: (_) => ConsignasController()),
+          prov.ChangeNotifierProvider(create: (_) => EstadoCuentaController()),
+          prov.ChangeNotifierProvider(
+              create: (_) => MultasGuardiasContrtoller()),
+          prov.ChangeNotifierProvider(create: (_) => InformeController()),
+          prov.ChangeNotifierProvider(create: (_) => LogisticaController()),
+          prov.ChangeNotifierProvider(create: (_) => AvisoSalidaController()),
+          prov.ChangeNotifierProvider(
+              create: (_) => CambioDePuestoController()),
+          prov.ChangeNotifierProvider(create: (_) => AusenciasController()),
+          prov.ChangeNotifierProvider(create: (_) => TurnoExtraController()),
+          prov.ChangeNotifierProvider(create: (_) => ActivitiesController()),
+          prov.ChangeNotifierProvider(create: (_) => EncuestasController()),
+          prov.ChangeNotifierProvider(create: (_) => EvaluacionesController()),
+          prov.ChangeNotifierProvider(
+              create: (_) => CapacitacionesController()),
+          prov.ChangeNotifierProvider(create: (_) => SugerenciasController()),
+          prov.ChangeNotifierProvider(
               create: (_) => ActividadesAsignadasController()),
-          ChangeNotifierProvider(create: (_) => BitacoraController()),
-          ChangeNotifierProvider(create: (_) => ResidentesController()),
-          ChangeNotifierProvider(create: (_) => GestionDocumentalController()),
+          prov.ChangeNotifierProvider(create: (_) => BitacoraController()),
+          prov.ChangeNotifierProvider(create: (_) => ResidentesController()),
+          prov.ChangeNotifierProvider(
+              create: (_) => GestionDocumentalController()),
 
           //**********NUEVOS************//
-          ChangeNotifierProvider(create: (_) => NuevoPermisoController()),
-          ChangeNotifierProvider(create: (_) => NuevoTurnoExtraController()),
+          prov.ChangeNotifierProvider(create: (_) => NuevoPermisoController()),
+          prov.ChangeNotifierProvider(
+              create: (_) => NuevoTurnoExtraController()),
 
-          ChangeNotifierProvider(create: (_) => CierreBitacoraController()),
+          prov.ChangeNotifierProvider(
+              create: (_) => CierreBitacoraController()),
         ],
-        child: Consumer<ThemeApp>(
+        child: prov.Consumer<ThemeApp>(
           builder: (_, valueTheme, __) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,

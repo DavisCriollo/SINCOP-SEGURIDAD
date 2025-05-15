@@ -283,6 +283,7 @@ class ThemeApp with ChangeNotifier {
 
   ThemeData get themeData {
     return ThemeData(
+      useMaterial3: true,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         primary: _primaryColor,
         secondary: _secondaryColor,

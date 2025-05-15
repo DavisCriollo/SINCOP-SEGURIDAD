@@ -1521,8 +1521,11 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               ),
                             ),
                             Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               alignment: Alignment.center,
-                              color: Colors.grey.shade300,
                               padding: EdgeInsets.symmetric(
                                   vertical: size.iScreen(0.5),
                                   horizontal: size.iScreen(0.5)),
@@ -2058,6 +2061,146 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 Wrap(
                   alignment: WrapAlignment.center,
                   children: [
+                    //==================================================//
+                    Consumer<BotonTurnoController>(builder:
+                        (BuildContext context, ctrlHome, Widget? child) {
+                      return _itemsMenuLateral(
+                        size,
+                        'Actividades',
+                        Icons.streetview_outlined,
+                        ctrlTheme.combinedColors[0],
+                        ctrlHome.getTurnoBTN == true
+                            ? () async {
+                                bool isGpsEnabled = await context
+                                    .read<HomeController>()
+                                    .checkGpsStatus();
+                                if (!isGpsEnabled) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AccesoGPSPage()),
+                                  );
+                                } else {
+                                  final controller = context
+                                      .read<ActividadesAsignadasController>();
+                                  controller.setLabelActividad('DEL DIA');
+                                  controller.getActividadesAsignadas(
+                                      '', 'false');
+
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ListaDeActividades(
+                                                  // tipo: widget.tipo,
+                                                  // usuario: widget.user,
+                                                  )))
+                                      .then((value) {
+                                    controller.borrarDatos();
+                                  });
+                                }
+                              }
+                            : () {},
+                        'ACTIVIDAD',
+                      );
+                    }),
+                    Consumer<BotonTurnoController>(builder:
+                        (BuildContext context, ctrlHome, Widget? child) {
+                      return _itemsMenuLateral(
+                        size,
+                        'Informes',
+                        Icons.analytics_outlined,
+                        ctrlTheme.combinedColors[1],
+                        () async {
+                          bool isGpsEnabled = await context
+                              .read<HomeController>()
+                              .checkGpsStatus();
+                          if (!isGpsEnabled) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AccesoGPSPage()),
+                            );
+                          } else {
+                            if (ctrlHome.getTurnoBTN == true) {
+                              if ((widget.tipo!.contains('GUARDIA'))) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ListaInformesGuardiasPage(
+                                            usuario: widget.user)));
+                              }
+                            } else {
+                              NotificatiosnService.showSnackBarDanger(
+                                  'NO HA INICIADO TURNO');
+                            }
+                            if ((widget.tipo!.contains('SUPERVISOR') ||
+                                widget.tipo!.contains('ADMIN'))) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      ListaInformesGuardiasPage(
+                                          usuario: widget.user)));
+                            }
+                          }
+                        },
+                        'INFORME',
+                      );
+                    }),
+                    Consumer<BotonTurnoController>(
+                      builder: (BuildContext context, ctrlHome, Widget? child) {
+                        return _itemsMenuLateral(
+                          size,
+                          'Consignas',
+                          Icons.assignment_turned_in_outlined,
+                          ctrlTheme.combinedColors[2],
+                          () async {
+                            bool isGpsEnabled = await context
+                                .read<HomeController>()
+                                .checkGpsStatus();
+                            if (!isGpsEnabled) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AccesoGPSPage()),
+                              );
+                            } else {
+                              if (ctrlHome.getTurnoBTN == true) {
+                                if ((widget.tipo!.contains('GUARDIA') ||
+                                    widget.tipo!.contains('SUPERVISOR') ||
+                                    widget.tipo!.contains('ADMIN'))) {
+                                  Provider.of<ConsignasController>(context,
+                                          listen: false)
+                                      .getTodasLasConsignasClientes(
+                                          '', 'false');
+                                  if (widget.tipo!.contains('GUARDIA') ||
+                                      widget.tipo!.contains('SUPERVISOR') ||
+                                      widget.tipo!.contains('ADMIN')) {
+                                    Navigator.pushNamed(
+                                        context, 'listaConsignasGuardias');
+                                  }
+                                } else {}
+                              } else {
+                                if ((widget.tipo!.contains('CLIENTE'))) {
+                                  Provider.of<ConsignasController>(context,
+                                          listen: false)
+                                      .getTodasLasConsignasClientes(
+                                          '', 'false');
+                                  if (widget.tipo!.contains('CLIENTE')) {
+                                    Navigator.pushNamed(
+                                        context, 'listaConsignasClientes');
+                                  }
+                                }
+                                //  NotificatiosnService.showSnackBarDanger('NO HA INICIADO TURNO');
+                              }
+                            }
+                          },
+                          'CONSIGNA',
+                        );
+                      },
+                    ),
+
+                    //==================================================//
+
                     _itemsMenuLateral(
                       size,
                       'Multas',
@@ -2112,6 +2255,23 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       },
                       'MULTA',
                     ),
+
+                    //=========================//
+                    _itemsMenuLateral(size, 'Faltas', Icons.summarize_outlined,
+                        ctrlTheme.combinedColors[3], () async {
+                      context
+                          .read<MultasGuardiasContrtoller>()
+                          .getTodasLasFaltasInjustificadas('');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => ListaFaltasInjustificadas(
+                                    user: widget.user,
+                                  )))
+                          // HomePageMultiSelect()
+                          );
+                    }, 'FALTAS'),
+
                     widget.user!.rol!.contains('RESIDENTE') ||
                             widget.user!.rol!.contains('GUARDIA')
                         ? Container()
@@ -2202,73 +2362,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       },
                       'PERMISO',
                     ),
-                    _itemsMenuLateral(
-                      size,
-                      'Quejas/Reclamos',
-                      Icons.rate_review_outlined,
-                      ctrlTheme.combinedColors[1],
-                      () async {
-                        bool isGpsEnabled = await context
-                            .read<HomeController>()
-                            .checkGpsStatus();
-                        if (!isGpsEnabled) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AccesoGPSPage()),
-                          );
-                        } else {
-                          final cotrl = context.read<HomeController>();
-
-                          cotrl.buscaGestionDocumental('', 'ENVIADO');
-                          // _cotrl.buscaGestionDocumental('','RECIBIDO');
-                          // Navigator.pushNamed(context, 'evaluacion');
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => ListaGestioDocumental(
-                                        user: widget.user,
-                                      )))
-                              // HomePageMultiSelect()
-                              );
-                        }
-                      },
-                      'QUEJA',
-                    ),
-                    _itemsMenuLateral(
-                      size,
-                      'Encuestas',
-                      Icons.checklist_rtl_outlined,
-                      ctrlTheme.combinedColors[2],
-                      () async {
-                        bool isGpsEnabled = await context
-                            .read<HomeController>()
-                            .checkGpsStatus();
-                        if (!isGpsEnabled) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AccesoGPSPage()),
-                          );
-                        } else {
-                          context
-                              .read<EncuestasController>()
-                              .buscaEncuestas('', 'false');
-
-                          // Navigator.pushNamed(context, 'encuestas');
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => EncuastasPage(
-                                        usuario: widget.user,
-                                      )))
-                              // HomePageMultiSelect()
-                              );
-                        }
-                      },
-                      'ENCUESTA',
-                    ),
                   ],
                 ),
                 SizedBox(
@@ -2331,127 +2424,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 Wrap(
                   alignment: WrapAlignment.center,
                   children: [
-                    _itemsMenuLateral(
-                      size,
-                      'Actividades',
-                      Icons.streetview_outlined,
-                      ctrlTheme.combinedColors[0],
-                      ctrlHome.getTurnoBTN == true
-                          ? () async {
-                              bool isGpsEnabled = await context
-                                  .read<HomeController>()
-                                  .checkGpsStatus();
-                              if (!isGpsEnabled) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AccesoGPSPage()),
-                                );
-                              } else {
-                                final controller = context
-                                    .read<ActividadesAsignadasController>();
-                                controller.setLabelActividad('DEL DIA');
-                                controller.getActividadesAsignadas('', 'false');
-
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ListaDeActividades(
-                                                // tipo: widget.tipo,
-                                                // usuario: widget.user,
-                                                )))
-                                    .then((value) {
-                                  controller.borrarDatos();
-                                });
-                              }
-                            }
-                          : () {},
-                      'ACTIVIDAD',
-                    ),
-                    _itemsMenuLateral(
-                      size,
-                      'Informes',
-                      Icons.analytics_outlined,
-                      ctrlTheme.combinedColors[1],
-                      () async {
-                        bool isGpsEnabled = await context
-                            .read<HomeController>()
-                            .checkGpsStatus();
-                        if (!isGpsEnabled) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AccesoGPSPage()),
-                          );
-                        } else {
-                          if (ctrlHome.getTurnoBTN == true) {
-                            if ((widget.tipo!.contains('GUARDIA'))) {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      ListaInformesGuardiasPage(
-                                          usuario: widget.user)));
-                            }
-                          } else {
-                            NotificatiosnService.showSnackBarDanger(
-                                'NO HA INICIADO TURNO');
-                          }
-                          if ((widget.tipo!.contains('SUPERVISOR') ||
-                              widget.tipo!.contains('ADMIN'))) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ListaInformesGuardiasPage(
-                                    usuario: widget.user)));
-                          }
-                        }
-                      },
-                      'INFORME',
-                    ),
-                    _itemsMenuLateral(
-                      size,
-                      'Consignas',
-                      Icons.assignment_turned_in_outlined,
-                      ctrlTheme.combinedColors[2],
-                      () async {
-                        bool isGpsEnabled = await context
-                            .read<HomeController>()
-                            .checkGpsStatus();
-                        if (!isGpsEnabled) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AccesoGPSPage()),
-                          );
-                        } else {
-                          if (ctrlHome.getTurnoBTN == true) {
-                            if ((widget.tipo!.contains('GUARDIA') ||
-                                widget.tipo!.contains('SUPERVISOR') ||
-                                widget.tipo!.contains('ADMIN'))) {
-                              Provider.of<ConsignasController>(context,
-                                      listen: false)
-                                  .getTodasLasConsignasClientes('', 'false');
-                              if (widget.tipo!.contains('GUARDIA') ||
-                                  widget.tipo!.contains('SUPERVISOR') ||
-                                  widget.tipo!.contains('ADMIN')) {
-                                Navigator.pushNamed(
-                                    context, 'listaConsignasGuardias');
-                              }
-                            } else {}
-                          } else {
-                            if ((widget.tipo!.contains('CLIENTE'))) {
-                              Provider.of<ConsignasController>(context,
-                                      listen: false)
-                                  .getTodasLasConsignasClientes('', 'false');
-                              if (widget.tipo!.contains('CLIENTE')) {
-                                Navigator.pushNamed(
-                                    context, 'listaConsignasClientes');
-                              }
-                            }
-                            //  NotificatiosnService.showSnackBarDanger('NO HA INICIADO TURNO');
-                          }
-                        }
-                      },
-                      'CONSIGNA',
-                    ),
+                    //====================COMUNICADOS=======================//
                     widget.tipo!.contains('GUARDIA')
                         ? Container()
                         : _itemsMenuLateral(
@@ -2500,7 +2473,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     //     ctrlTheme.combinedColors[0], () {
                     //   _modalReportes(context, size, widget.user);
                     // }),
-
+                    //====================EVALUACIONES=======================//
                     _itemsMenuLateral(
                         size,
                         'Evaluaciones',
@@ -2536,6 +2509,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         }
                       }
                     }, 'EVALUACION'),
+                    //====================CAPACITACIONES=======================//
                     _itemsMenuLateral(
                         size,
                         'Capacitaciones',
@@ -2596,22 +2570,79 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       //             },
                       //           ),
                     }, 'CAPACITACION'),
-
-                    //=========================//
-                    _itemsMenuLateral(size, 'Faltas', Icons.summarize_outlined,
-                        ctrlTheme.combinedColors[3], () async {
-                      context
-                          .read<MultasGuardiasContrtoller>()
-                          .getTodasLasFaltasInjustificadas('');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => ListaFaltasInjustificadas(
-                                    user: widget.user,
-                                  )))
-                          // HomePageMultiSelect()
+                    //====================RECLAMOS=======================//
+                    _itemsMenuLateral(
+                      size,
+                      'Quejas/Reclamos',
+                      Icons.rate_review_outlined,
+                      ctrlTheme.combinedColors[1],
+                      () async {
+                        bool isGpsEnabled = await context
+                            .read<HomeController>()
+                            .checkGpsStatus();
+                        if (!isGpsEnabled) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AccesoGPSPage()),
                           );
-                    }, 'FALTAS'),
+                        } else {
+                          final cotrl = context.read<HomeController>();
+
+                          cotrl.buscaGestionDocumental('', 'ENVIADO');
+                          // _cotrl.buscaGestionDocumental('','RECIBIDO');
+                          // Navigator.pushNamed(context, 'evaluacion');
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => ListaGestioDocumental(
+                                        user: widget.user,
+                                      )))
+                              // HomePageMultiSelect()
+                              );
+                        }
+                      },
+                      'QUEJA',
+                    ),
+
+                    //====================ENCUENSTAS=======================//
+
+                    _itemsMenuLateral(
+                      size,
+                      'Encuestas',
+                      Icons.checklist_rtl_outlined,
+                      ctrlTheme.combinedColors[2],
+                      () async {
+                        bool isGpsEnabled = await context
+                            .read<HomeController>()
+                            .checkGpsStatus();
+                        if (!isGpsEnabled) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AccesoGPSPage()),
+                          );
+                        } else {
+                          context
+                              .read<EncuestasController>()
+                              .buscaEncuestas('', 'false');
+
+                          // Navigator.pushNamed(context, 'encuestas');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => EncuastasPage(
+                                        usuario: widget.user,
+                                      )))
+                              // HomePageMultiSelect()
+                              );
+                        }
+                      },
+                      'ENCUESTA',
+                    ),
+
+                    //=============================================//
                   ],
                 ),
                 SizedBox(
