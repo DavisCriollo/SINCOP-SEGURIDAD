@@ -3,76 +3,70 @@ import 'package:nseguridad/src/utils/theme.dart';
 
 // import 'package:sincop_app/src/utils/theme.dart';
 
-
-
-
 class NotificatiosnService {
+  // Método para ocultar el Snackbar actual
+  static void hideSnackBar() {
+    // Usamos el operador ?. por si la clave aún no está asociada a un estado
+    messengerKey.currentState?.hideCurrentSnackBar();
+  }
+
   static GlobalKey<ScaffoldMessengerState> messengerKey =
-       GlobalKey<ScaffoldMessengerState>();
-  
+      GlobalKey<ScaffoldMessengerState>();
   static showSnackBarError(String message) {
-    final snackBar =  SnackBar(
+    hideSnackBar();
+    final snackBar = SnackBar(
       // backgroundColor: Colors.red.withOpacity(0.9),
- backgroundColor: cuaternaryColor,
+      backgroundColor: cuaternaryColor,
       content: Text(
         message,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 20
-        ),
+        style: const TextStyle(color: Colors.white, fontSize: 20),
       ),
     );
+
     messengerKey.currentState!.showSnackBar(snackBar);
   }
+
   static showSnackBarSuccsses(String message) {
-    final snackBar =  SnackBar(
+    hideSnackBar();
+    final snackBar = SnackBar(
       // backgroundColor: Colors.green.withOpacity(0.9),
       backgroundColor: secondaryColor,
       content: Text(
         message,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 20
-        ),
+        style: const TextStyle(color: Colors.white, fontSize: 20),
       ),
     );
     messengerKey.currentState!.showSnackBar(snackBar);
   }
+
   static showSnackBarDanger(String message) {
-    final snackBar =  SnackBar(
+    hideSnackBar();
+    final snackBar = SnackBar(
       // backgroundColor: Colors.green.withOpacity(0.9),
       backgroundColor: tercearyColor,
       content: Text(
         message,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 20
-        ),
+        style: const TextStyle(color: Colors.white, fontSize: 20),
       ),
     );
     messengerKey.currentState!.showSnackBar(snackBar);
   }
-  static showSnackBarInfo(String message,String result) {
-    final snackBar =  SnackBar(
+
+  static showSnackBarInfo(String message, String result) {
+    hideSnackBar();
+    final snackBar = SnackBar(
       // backgroundColor: Colors.green.withOpacity(0.9),
-      backgroundColor: (result=='success')?secondaryColor:tercearyColor,
+      backgroundColor: (result == 'success') ? secondaryColor : tercearyColor,
       content: Text(
         message,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 20
-        ),
+        style: const TextStyle(color: Colors.white, fontSize: 20),
       ),
     );
     messengerKey.currentState!.showSnackBar(snackBar);
   }
   // static alertaInfo(String message,String result) {
-    
-    
-    
-    
-    
-  //   // final snackBar = 
+
+  //   // final snackBar =
   //    const AlertDialog(
   //     title: Text('Notificaciones'),
   //     content:

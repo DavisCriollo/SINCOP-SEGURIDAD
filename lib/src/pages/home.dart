@@ -1429,7 +1429,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     ),
 
                     //====================EL MENU BOTONERA=======================//
-
+                    gruposItemMenuNovedades(size, 'Novedades'),
                     widget.user!.rol!.contains('SUPERVISOR') ||
                             widget.user!.rol!.contains('GUARDIA') ||
                             widget.user!.rol!.contains('ADMINISTADOR') ||
@@ -1438,8 +1438,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         ? gruposItemMenuGestionIntegral(
                             size, 'Gestión Integral')
                         : Container(),
-
-                    gruposItemMenuNovedades(size, 'Novedades'),
 
                     gruposItemMenuBitacora(size, 'Bitácora'),
                     //===========================================================//
@@ -2020,6 +2018,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     return Consumer<HomeController>(
       builder: (_, ctrlHome, __) {
         return ExpansionTile(
+          initiallyExpanded: true,
           title: SizedBox(
             width: size.wScreen(100),
             child: Text(
