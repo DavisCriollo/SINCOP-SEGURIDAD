@@ -1138,7 +1138,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           horizontal: size.iScreen(2.0),
                           vertical: size.iScreen(0.0)),
                       child: Text(
-                        'Versión. 1.0.0',
+                        'Versión. 1.0.8',
                         style: GoogleFonts.roboto(
                             fontSize: size.iScreen(1.6),
                             color: Colors.black87,
@@ -1162,8 +1162,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   margin: EdgeInsets.only(
                       left: size.iScreen(2.0),
                       right: size.iScreen(2.0),
-                      top: size.iScreen(5.0),
-                      bottom: size.iScreen(2.0)),
+                      top: size.iScreen(2.0),
+                      bottom: size.iScreen(1.0)),
                   child: Text(
                     'Contáctenos:',
                     style: GoogleFonts.roboto(
@@ -1172,12 +1172,49 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-                SelectableText(
-                  '0980290473',
-                  style: GoogleFonts.roboto(
-                      fontSize: size.iScreen(2.0),
-                      color: const Color(0xFF4064AD),
-                      fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Soporte 24/7 :  ',
+                      style: GoogleFonts.lexendDeca(
+                          fontSize: size.iScreen(1.8),
+                          color: Colors.black87,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    SelectableText(
+                      '+593986811138',
+                      style: GoogleFonts.lexendDeca(
+                          fontSize: size.iScreen(1.8),
+                          color: const Color(0xFF4064AD),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.iScreen(1.0),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Desarrollo :  ',
+                      style: GoogleFonts.lexendDeca(
+                          fontSize: size.iScreen(1.8),
+                          color: Colors.black87,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    SelectableText(
+                      '+593980290473',
+                      style: GoogleFonts.lexendDeca(
+                          fontSize: size.iScreen(1.8),
+                          color: const Color(0xFF4064AD),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.iScreen(1.0),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: size.iScreen(1.0)),
@@ -1186,25 +1223,25 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     children: [
                       GestureDetector(
                         child: Text(
-                          'soporte@2jl.ec',
+                          'soporte@sincop.app',
                           style: GoogleFonts.roboto(
                               fontSize: size.iScreen(2.0),
                               color: const Color(0xFF4064AD),
                               fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          urlSendEmail('soporte@2jl.ec');
+                          urlSendEmail('soporte@sincop.app');
                         },
                       ),
                       GestureDetector(
                         child: Text(
-                          'neitor2jl@gmail.com',
+                          'soporte@2jl.ec',
                           style: GoogleFonts.roboto(
                               fontSize: size.iScreen(2.0),
                               color: const Color(0xFF4064AD),
                               fontWeight: FontWeight.bold),
                         ),
-                        onTap: () => urlSendEmail('neitor2jl@gmail.com'),
+                        onTap: () => urlSendEmail('soporte@2jl.ec'),
                       ),
                     ],
                   ),
@@ -1214,7 +1251,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: size.iScreen(2.0),
-                          vertical: size.iScreen(2.0)),
+                          vertical: size.iScreen(1.0)),
                       child: Text(
                         'Visita nuestra web',
                         style: GoogleFonts.roboto(
@@ -1229,14 +1266,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                             horizontal: size.iScreen(0.0),
                             vertical: size.iScreen(0.5)),
                         child: Text(
-                          'https://neitor.com',
+                          'https://sincop.app',
                           style: GoogleFonts.roboto(
                               fontSize: size.iScreen(2.0),
                               color: const Color(0xFF51C1E1),
-                              fontWeight: FontWeight.normal),
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                      onTap: () => launchUrlsNeitor('https://neitor.com/'),
+                      onTap: () => launchUrlsNeitor('https://sincop.app/'),
                     ),
                   ],
                 ),
@@ -1244,27 +1281,27 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // INSTAGRAM
-                    _ItemsSocials(
-                      size: size,
-                      icon: FontAwesomeIcons.instagram,
-                      color: const Color(0xFFD04768),
-                      onTap: () => abrirPaginaNeitor(),
-                    ),
+                    // _ItemsSocials(
+                    //   size: size,
+                    //   icon: FontAwesomeIcons.instagram,
+                    //   color: const Color(0xFFD04768),
+                    //   onTap: () => abrirPaginaNeitor(),
+                    // ),
                     //FACEBOOK
-                    _ItemsSocials(
-                      size: size,
-                      icon: FontAwesomeIcons.facebookF,
-                      color: const Color(0xFF4064AD),
-                      onTap: () => abrirPaginaNeitor(),
-                    ),
+                    // _ItemsSocials(
+                    //     size: size,
+                    //     icon: FontAwesomeIcons.facebookF,
+                    //     color: const Color(0xFF4064AD),
+                    //     onTap: () => null // abrirPaginaNeitor(),
+                    //     ),
 
                     //TWITTER
-                    _ItemsSocials(
-                      size: size,
-                      icon: FontAwesomeIcons.twitter,
-                      color: const Color(0xFF00B1EA),
-                      onTap: () => abrirPaginaNeitor(),
-                    ),
+                    // _ItemsSocials(
+                    //   size: size,
+                    //   icon: FontAwesomeIcons.twitter,
+                    //   color: const Color(0xFF00B1EA),
+                    //   onTap: () => abrirPaginaNeitor(),
+                    // ),
                   ],
                 )
               ],
@@ -2025,7 +2062,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               titulo,
               textAlign: TextAlign.center,
               style: GoogleFonts.roboto(
-                fontSize: size.iScreen(2.5),
+                fontSize: size.iScreen(2.3),
                 color: Colors.black87,
                 fontWeight: FontWeight.bold,
               ),
@@ -2388,7 +2425,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               titulo,
               textAlign: TextAlign.center,
               style: GoogleFonts.roboto(
-                fontSize: size.iScreen(2.5),
+                fontSize: size.iScreen(2.3),
                 color: Colors.black87,
                 fontWeight: FontWeight.bold,
               ),
@@ -2669,7 +2706,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               titulo,
               textAlign: TextAlign.center,
               style: GoogleFonts.roboto(
-                fontSize: size.iScreen(2.5),
+                fontSize: size.iScreen(2.3),
                 color: Colors.black87,
                 fontWeight: FontWeight.bold,
               ),

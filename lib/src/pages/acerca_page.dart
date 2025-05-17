@@ -99,12 +99,23 @@ class AcercaDePage extends StatelessWidget {
                           fontWeight: FontWeight.normal),
                     ),
                   ),
-                  SelectableText(
-                    '0980290473',
-                    style: GoogleFonts.lexendDeca(
-                        fontSize: size.iScreen(2.0),
-                        color: const Color(0xFF4064AD),
-                        fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      Text(
+                        'Soporte 24/7 :',
+                        style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.0),
+                            color: Colors.black87,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      SelectableText(
+                        '+593986811138',
+                        style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.0),
+                            color: const Color(0xFF4064AD),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: size.iScreen(1.0)),
