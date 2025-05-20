@@ -43,8 +43,8 @@ class ApiProvider {
       final dataResp = await _http.post(Uri.parse('$_dirURL/auth/login'),
           body: {"usuario": usuario, "password": password, "empresa": empresa});
       final respo = jsonDecode(dataResp.body);
-      print('EL LOGIN  API :${respo}');
-      print('EL code  API :${dataResp.statusCode}');
+      // print('EL LOGIN  API :${respo}');
+      // print('EL code  API :${dataResp.statusCode}');
 
       if (dataResp.statusCode == 404 || dataResp.statusCode == 500) {
         snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
@@ -3466,8 +3466,8 @@ class ApiProvider {
           .post(Uri.parse('https://api.ueavolta.edu.ec/api/grades/search'));
       // body: {"usuario": usuario, "password": password, "empresa": empresa});
       final respo = jsonDecode(dataResp.body);
-      print('LA  API :${respo}');
-      print('LA  API :${respo.runtimeType}');
+      // print('LA  API :${respo}');
+      // print('LA  API :${respo.runtimeType}');
       //   print('EL code  API :${dataResp.statusCode}');
 
       if (dataResp.statusCode == 404 || dataResp.statusCode == 500) {

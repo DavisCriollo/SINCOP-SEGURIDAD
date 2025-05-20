@@ -2035,7 +2035,7 @@ class HomeController extends ChangeNotifier {
   String? get getTokenFCM => _tokenFCM;
   Future? setTokenFCM(String? id) async {
     _tokenFCM = id;
-    // print('EL TOKEN FCM RECIVO DE FIREBASE $_tokenFCM');
+    print('EL TOKEN FCM RECIVO DE FIREBASE $_tokenFCM');
     notifyListeners();
   }
 

@@ -46,7 +46,6 @@ class Auth {
     final String value = jsonEncode(session.toJson());
 // GUARDAMOS LA INFORMACION DEL DISPOSITIVO
     await _storage.write(key: keySESION, value: value);
-    print('SESION GUARDADA :$value');
   }
 
 // OBTEMENOS LA INFORMACION DEL DISPOSITIVO

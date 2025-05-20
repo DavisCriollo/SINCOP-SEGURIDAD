@@ -56,6 +56,7 @@ import 'package:nseguridad/src/service/notifications_service.dart';
 import 'package:nseguridad/src/service/socket_service.dart';
 import 'package:nseguridad/src/theme/themes_app.dart';
 import 'package:nseguridad/src/urls/urls.dart';
+import 'package:nseguridad/src/utils/call_phone.dart';
 import 'package:nseguridad/src/utils/dialogs.dart';
 import 'package:nseguridad/src/utils/responsive.dart';
 import 'package:nseguridad/src/utils/sizeApp.dart';
@@ -1182,12 +1183,15 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           color: Colors.black87,
                           fontWeight: FontWeight.normal),
                     ),
-                    SelectableText(
-                      '+593986811138',
-                      style: GoogleFonts.lexendDeca(
-                          fontSize: size.iScreen(1.8),
-                          color: const Color(0xFF4064AD),
-                          fontWeight: FontWeight.bold),
+                    GestureDetector(
+                      onLongPress: () => callNumber('+593986811138'),
+                      child: Text(
+                        '+593986811138',
+                        style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(1.8),
+                            color: const Color(0xFF4064AD),
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -1204,12 +1208,15 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           color: Colors.black87,
                           fontWeight: FontWeight.normal),
                     ),
-                    SelectableText(
-                      '+593980290473',
-                      style: GoogleFonts.lexendDeca(
-                          fontSize: size.iScreen(1.8),
-                          color: const Color(0xFF4064AD),
-                          fontWeight: FontWeight.bold),
+                    GestureDetector(
+                      onLongPress: () => callNumber('+593980290473'),
+                      child: Text(
+                        '+593980290473',
+                        style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(1.8),
+                            color: const Color(0xFF4064AD),
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
