@@ -68,7 +68,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart' as prov;
 import 'package:share_plus/share_plus.dart';
 
-import '../../features/shared/helpers/data_table_prendas.dart';
 import '../../features/shared/helpers/relevo.dart';
 import '../../features/shared/provider/prendas_provider.dart';
 import '../../features/shared/provider/provider_initial.dart';
@@ -4099,75 +4098,83 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
   }
 
 //====================================MUESTRA MODAL RELEVO================================================//
-  //========================================================================================================//
+//========================================================================================================//
+
   void _modalRelevo(WidgetRef ref) {
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (BuildContext context) {
-        final size = respRiv.Responsive.of(context);
-        // 1. Observa la lista de prendas para que la UI se actualice
-        final currentPrendas = ref.watch(prendasProvider);
-
-        // 2. Lee las funciones de actualización del notifier
-        final updatePrendaEstado =
-            ref.read(prendasProvider.notifier).updatePrendaEstado;
-        // --- ¡ASEGÚRATE DE QUE ESTA LÍNEA ESTÉ PRESENTE Y CORRECTA! ---
-        final updatePrendaObservacion =
-            ref.read(prendasProvider.notifier).updatePrendaObservacion;
+      builder: (BuildContext dialogContext) {
+        final size = Responsive.of(dialogContext);
 
         final relevo = Relevo(
           nombre: 'EDUARDO MARCELO MARTINEZ PINARGOTE ',
           hora: '20:00',
           cliente: 'Edificio Central S.A.',
           puesto: 'Garita de Acceso 1',
-          prendas: listaDePrendasDelRelevo,
+          prendas: [], // Inicializa con una lista vacía o lo que sea apropiado si currentPrendas se usa después
         );
 
         return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
+          onTap: () =>
+              FocusScope.of(dialogContext).unfocus(), // Usa dialogContext
           child: AlertDialog(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
             ),
             insetPadding: EdgeInsets.symmetric(
-                horizontal: size.iScreen(0), vertical: size.iScreen(0)),
+                horizontal: size.iScreen(0.5), vertical: size.iScreen(0)),
             contentPadding: EdgeInsets.zero,
             content: SizedBox(
               width: size.wScreen(99),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: size.iScreen(2.0),
-                        vertical: size.iScreen(1.0)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('ENTREGA DE TURNO',
-                            style: GoogleFonts.roboto(
-                              fontSize: size.iScreen(2.0),
-                              fontWeight: FontWeight.bold,
-                            )),
-                        IconButton(
-                          splashRadius: size.iScreen(3.0),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Icons.close,
-                            color: Colors.red,
-                            size: size.iScreen(3.5),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.iScreen(2.0),
+                          vertical: size.iScreen(1.0)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('ENTREGA DE TURNO',
+                              style: GoogleFonts.roboto(
+                                fontSize: size.iScreen(2.0),
+                                fontWeight: FontWeight.bold,
+                              )),
+                          IconButton(
+                            splashRadius: size.iScreen(3.0),
+                            onPressed: () {
+                              Navigator.pop(dialogContext); // Usa dialogContext
+                            },
+                            icon: Icon(
+                              Icons.close,
+                              color: Colors.red,
+                              size: size.iScreen(3.5),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Flexible(
-                    child: PageView(
-                      children: [
-                        SingleChildScrollView(
+                    // --- Envuelve la parte dinámica con Consumer ---
+                    Consumer(
+                      builder: (context, ref, child) {
+                        // Ahora, Riverpod observará y reconstruirá esta parte
+                        // cada vez que 'prendasProvider' cambie.
+                        final currentPrendas = ref.watch(prendasProvider);
+                        final updatePrendaEstado = ref
+                            .read(prendasProvider.notifier)
+                            .updatePrendaEstado;
+                        final updatePrendaObservacion = ref
+                            .read(prendasProvider.notifier)
+                            .updatePrendaObservacion;
+
+                        // Si relevo.prendas siempre debe reflejar currentPrendas, actualízalo aquí.
+                        relevo.prendas =
+                            currentPrendas; // Asigna la lista de Riverpod
+
+                        return SingleChildScrollView(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: size.iScreen(2.0)),
@@ -4258,78 +4265,322 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
                                       fontWeight: FontWeight.normal,
                                       color: Colors.grey,
                                     )),
-                                // --- SECCIÓN MODIFICADA: Ahora usa DataTable ---
-                                // --- SECCIÓN MODIFICADA: Ahora usa DataTable ---
                                 Container(
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.grey.shade300),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child:
-                                      //***********************************************/
-                                      PaginatedDataTable(
-                                    columns: const [
-                                      DataColumn(
-                                        label: Text('Detalle'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Cantidad'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Estado'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Observación'),
-                                      ),
-                                    ],
-                                    // **¡IMPORTANTE!** Aquí es donde pasas la instancia correcta de PrendaDataSource
-                                    source: PrendaDataSource(
-                                      relevo
-                                          .prendas, // Tus datos actuales de Riverpod
-                                      size,
-                                      updatePrendaEstado, // El callback para actualizar el estado
-                                      updatePrendaObservacion, // El callback para actualizar la observación
-                                      context, // El BuildContext necesario para la modal
-                                    ),
-                                    // header: const Text(
-                                    //     'Inventario de Prendas'), // Puedes agregar un encabezado
+                                  // decoration: BoxDecoration(
+                                  //   border:
+                                  //       Border.all(color: Colors.grey.shade300),
+                                  //   borderRadius: BorderRadius.circular(8),
+                                  // ),
+                                  height: size.hScreen(
+                                      60), // Ajusta esta altura según sea necesario
+                                  child: ListView.builder(
+                                    itemCount: currentPrendas.length,
+                                    itemBuilder:
+                                        (BuildContext itemBuilderContext,
+                                            int index) {
+                                      final prenda = currentPrendas[index];
 
-                                    // Otras propiedades útiles:
-                                    // sortColumnIndex: 0,
-                                    // sortAscending: true,
-                                    // onPageChanged: (int page) { /* ... */ },
-                                    // onRowsPerPageChanged: (int? rows) { /* ... */ },
-
-                                    //***********************************************/
+                                      return Card(
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: size.iScreen(0.5),
+                                            horizontal: size.iScreen(1.0)),
+                                        elevation: 5,
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.all(size.iScreen(1.5)),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Prenda:', // Asumo 'nombre'
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize:
+                                                            size.iScreen(2.0),
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.grey),
+                                                  ),
+                                                  Text(
+                                                    ' ${prenda.descripcion}', // Asumo 'nombre'
+                                                    style: GoogleFonts.roboto(
+                                                      fontSize:
+                                                          size.iScreen(2.0),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                  height: size.iScreen(0.5)),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      _showEstadoSelectionModal(
+                                                        prenda.id,
+                                                        prenda.estado,
+                                                        prenda
+                                                            .estado, // Pasa prenda.nombre aquí
+                                                        itemBuilderContext, // Usa el contexto del itemBuilder
+                                                        size,
+                                                        updatePrendaEstado,
+                                                      );
+                                                    },
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          'Estado: ',
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                            fontSize: size
+                                                                .iScreen(2.0),
+                                                            color: Colors.grey,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          ' ${prenda.estado}',
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                            fontSize: size
+                                                                .iScreen(2.0),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                          ),
+                                                        ),
+                                                        Icon(
+                                                            Icons
+                                                                .arrow_drop_down,
+                                                            size: size
+                                                                .iScreen(2.5)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                          size.iScreen(0.5)),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            'Observación :',
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                                    fontSize: size
+                                                                        .iScreen(
+                                                                            2.0),
+                                                                    color: Colors
+                                                                        .grey),
+                                                          ),
+                                                          IconButton(
+                                                            icon: Icon(
+                                                              Icons.edit,
+                                                              size: size
+                                                                  .iScreen(2.5),
+                                                              color: Colors
+                                                                  .grey[600],
+                                                            ),
+                                                            onPressed: () {
+                                                              _showObservacionModal(
+                                                                prenda.id,
+                                                                prenda
+                                                                    .observacion,
+                                                                prenda
+                                                                    .observacion,
+                                                                itemBuilderContext, // Usa el contexto del itemBuilder
+                                                                size,
+                                                                updatePrendaObservacion,
+                                                              );
+                                                            },
+                                                            tooltip:
+                                                                'Editar observación',
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Text(
+                                                        prenda.observacion !=
+                                                                    null &&
+                                                                prenda
+                                                                    .observacion!
+                                                                    .isNotEmpty
+                                                            ? '${prenda.observacion!}'
+                                                            : 'Agregar...',
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                          fontSize:
+                                                              size.iScreen(2.0),
+                                                          color: prenda.observacion !=
+                                                                      null &&
+                                                                  prenda
+                                                                      .observacion!
+                                                                      .isNotEmpty
+                                                              ? Colors.black
+                                                              : Colors
+                                                                  .blueAccent,
+                                                          decoration: prenda
+                                                                          .observacion !=
+                                                                      null &&
+                                                                  prenda
+                                                                      .observacion!
+                                                                      .isNotEmpty
+                                                              ? TextDecoration
+                                                                  .none
+                                                              : TextDecoration
+                                                                  .underline,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  //***********************************************/
                                 ),
-                                // --- FIN DE LA SECCIÓN MODIFICADA ---
                                 SizedBox(height: size.iScreen(1.0)),
                               ],
                             ),
                           ),
-                        ),
-                        Center(
-                          child: Text(
-                            'Segunda pagina',
-                            style: GoogleFonts.roboto(
-                              fontSize: size.iScreen(3.0),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                  SizedBox(
-                    height: size.iScreen(2.0),
-                  )
-                ],
+                    SizedBox(
+                      height: size.iScreen(2.0),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+// ====================================================================================================== //
+
+// --- FUNCIÓN PARA MOSTRAR LA MODAL DE SELECCIÓN DE ESTADO ---
+  void _showEstadoSelectionModal(
+      String prendaId,
+      String currentEstado,
+      String prendaNombre,
+      BuildContext context, // Ahora se recibe como parámetro
+      Responsive size, // Ahora se recibe como parámetro
+      void Function(String id, String nuevoEstado)
+          onEstadoChanged // Ahora se recibe como parámetro
+      ) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return SimpleDialog(
+          title: Text(
+            'Selecciona el estado',
+            style: GoogleFonts.roboto(
+                fontSize: size.iScreen(2.0), fontWeight: FontWeight.bold),
+          ),
+          children: estadosDisponibles.map((String estado) {
+            return SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(dialogContext, estado);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: size.iScreen(0.5)),
+                child: Text(
+                  estado,
+                  style: GoogleFonts.roboto(
+                    fontSize: size.iScreen(1.9),
+                    fontWeight: currentEstado == estado
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                    color: currentEstado == estado ? Colors.blue : Colors.black,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      },
+    ).then((String? selectedEstado) {
+      if (selectedEstado != null && selectedEstado != currentEstado) {
+        onEstadoChanged(prendaId, selectedEstado);
+      }
+    });
+  }
+
+// --- FUNCIÓN PARA MOSTRAR LA MODAL DE OBSERVACIÓN ---
+  void _showObservacionModal(
+      String prendaId,
+      String? currentObservacion,
+      String prendaNombre,
+      BuildContext context,
+      Responsive size,
+      void Function(String id, String? nuevaObservacion) onObservacionChanged) {
+    TextEditingController controller =
+        TextEditingController(text: currentObservacion);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(
+            'Observación',
+            style: GoogleFonts.roboto(
+                fontSize: size.iScreen(2.0), fontWeight: FontWeight.bold),
+          ),
+          content: TextField(
+            controller: controller,
+            maxLines: 5,
+            minLines: 1,
+            decoration: InputDecoration(
+              hintText: 'Escribe tu observación aquí...',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: Text('Cancelar',
+                  style: GoogleFonts.roboto(color: Colors.red)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                onObservacionChanged(
+                    prendaId,
+                    controller.text.trim().isEmpty
+                        ? null
+                        : controller.text.trim());
+                Navigator.pop(dialogContext);
+              },
+              child: Text('Guardar',
+                  style: GoogleFonts.roboto(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+            ),
+          ],
         );
       },
     );
