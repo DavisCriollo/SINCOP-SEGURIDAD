@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nseguridad/config/constants/environment.dart';
 
 import 'package:nseguridad/firebase_options.dart';
 import 'package:nseguridad/src/controllers/actividades_asignadas_controller.dart';
@@ -57,6 +58,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Environment.initEnvironment();
   runApp(const ProviderScope(child: MyApp()));
 }
 

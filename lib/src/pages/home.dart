@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nseguridad/src/api/authentication_client.dart';
@@ -59,15 +60,21 @@ import 'package:nseguridad/src/urls/urls.dart';
 import 'package:nseguridad/src/utils/call_phone.dart';
 import 'package:nseguridad/src/utils/dialogs.dart';
 import 'package:nseguridad/src/utils/responsive.dart';
+import 'package:nseguridad/features/shared/utils/responsive.dart' as respRiv;
 import 'package:nseguridad/src/utils/sizeApp.dart';
 import 'package:nseguridad/src/utils/theme.dart';
 import 'package:nseguridad/src/widgets/no_data.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as prov;
 import 'package:share_plus/share_plus.dart';
+
+import '../../features/shared/helpers/data_table_prendas.dart';
+import '../../features/shared/helpers/relevo.dart';
+import '../../features/shared/provider/prendas_provider.dart';
+import '../../features/shared/provider/provider_initial.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   final String? validaTurno;
   final String? ubicacionGPS;
   final Session? user;
@@ -82,10 +89,10 @@ class Home extends StatefulWidget {
       this.dataUser});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<Home> createState() => HomeState();
 }
 
-class _HomeState extends State<Home> with WidgetsBindingObserver {
+class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
   final homeControl = HomeController();
   final socketService = SocketService();
 
@@ -97,8 +104,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
 
-    final serviceSocket = Provider.of<SocketService>(context, listen: false);
-    final homeController = Provider.of<HomeController>(context, listen: false);
+    final serviceSocket =
+        prov.Provider.of<SocketService>(context, listen: false);
+    final homeController =
+        prov.Provider.of<HomeController>(context, listen: false);
     // ===================== VERIFICO DE QUE DISPOSITIVO EL GUARDIA INICIA TURNO  ================//
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if (kIsWeb) {
@@ -140,10 +149,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       homeController.buscaNotificacionesPush('');
       homeController.buscaNotificacionesPush2('');
     });
-    // serviceSocket.socket!.on('server:nuevanotificacion', (data) async {
-    //   homeController.buscaNotificacionesPush('');
-    //   homeController.buscaNotificacionesPush2('');
-    // });
 
     serviceSocket.socket?.on('server:error', (data) async {
       _showAlertDialog(data);
@@ -215,16 +220,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       }
 //********************************************//
     });
-//  void listenNotifications() =>
-//       LocalNotifications.onNotification.stream.listen(selectNotification);
-
-//   void selectNotification(String? payload) async {
-//     if (payload != null && payload.isNotEmpty && payload == 'ALERTA') {}
-//   }
-
-//   void isUpdate() async {
-//     await Auth.instance.deleteCache(context);
-//   }
 
     homeControl.getAllMantenimientos();
     await homeControl.validaInicioDeSesion(context);
@@ -658,7 +653,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           (widget.tipo!.contains('GUARDIA') ||
                   widget.tipo!.contains('SUPERVISOR') ||
                   widget.user!.usuario == 'talentohumano')
-              ? Consumer<HomeController>(
+              ? prov.Consumer<HomeController>(
                   builder: (_, valueNot1, __) {
                     return Container(
                         margin:
@@ -714,7 +709,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   },
                 )
               : Container(),
-          Consumer<HomeController>(
+          prov.Consumer<HomeController>(
             builder: (_, valueNot2, __) {
               return Container(
                   margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
@@ -723,7 +718,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   child: GestureDetector(
                     onTap: (valueNot2.getBotonTurno)
                         ? () {
-                            Provider.of<HomeController>(context, listen: false)
+                            prov.Provider.of<HomeController>(context,
+                                    listen: false)
                                 .buscaNotificacionesPush2('');
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -858,18 +854,18 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       //     );
       //   },
       // ),
-      bottomNavigationBar: Consumer<HomeController>(
+      bottomNavigationBar: prov.Consumer<HomeController>(
         builder: (context, provider, child) {
-          final themeModel = Provider.of<ThemeApp>(context);
+          final themeModel = prov.Provider.of<ThemeApp>(context);
 
           return Theme(
             data: Theme.of(context).copyWith(
               canvasColor: themeModel
                   .primaryColor, // color de fondo del BottomNavigationBar
             ),
-            child: Consumer<HomeController>(
+            child: prov.Consumer<HomeController>(
               builder: (context, provider, child) {
-                final themeModel = Provider.of<ThemeApp>(context);
+                final themeModel = prov.Provider.of<ThemeApp>(context);
 
                 return Theme(
                   data: Theme.of(context).copyWith(
@@ -938,7 +934,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   Widget _getPage(BuildContext context, Responsive size,
       HomeController ctrlHome, screenSize) {
-    final provider = Provider.of<HomeController>(context);
+    final provider = prov.Provider.of<HomeController>(context);
     final ctrlTheme = context.read<ThemeApp>();
     switch (provider.selectedIndex) {
       case 0:
@@ -1322,7 +1318,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   Widget _videosAyuda(Responsive size) {
     return Container(
       height: MediaQuery.of(context).size.height, // Limita la altura total
-      child: Consumer<HomeController>(builder: (_, videoProvider, __) {
+      child: prov.Consumer<HomeController>(builder: (_, videoProvider, __) {
         return Column(
           children: [
             // Caja de texto fija
@@ -1430,7 +1426,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         physics: const BouncingScrollPhysics(),
         child: Stack(
           children: [
-            Consumer<BotonTurnoController>(
+            prov.Consumer<BotonTurnoController>(
               builder: (_, value, __) {
                 return
                     //  value.getTurnoBTN?
@@ -1909,9 +1905,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     );
   }
 
-  Consumer<HomeController> menuPrincipalCircular(
+  prov.Consumer<HomeController> menuPrincipalCircular(
       Responsive size, BuildContext context, ThemeApp ctrlTheme) {
-    return Consumer<HomeController>(
+    return prov.Consumer<HomeController>(
       builder: (_, valueBotones, __) {
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -1991,7 +1987,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                             if (valueBotones.getgetTestTurno == true) {
                               if ((widget.tipo!.contains('GUARDIA') ||
                                   widget.tipo!.contains('SUPERVISOR'))) {
-                                Provider.of<ConsignasController>(context,
+                                prov.Provider.of<ConsignasController>(context,
                                         listen: false)
                                     .getTodasLasConsignasClientes('', 'false');
                                 if (widget.tipo!.contains('GUARDIA') ||
@@ -2002,7 +1998,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               } else {}
                             } else {
                               if ((widget.tipo!.contains('CLIENTE'))) {
-                                Provider.of<ConsignasController>(context,
+                                prov.Provider.of<ConsignasController>(context,
                                         listen: false)
                                     .getTodasLasConsignasClientes('', 'false');
                                 if (widget.tipo!.contains('CLIENTE')) {
@@ -2026,7 +2022,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         if (valueBotones.getgetTestTurno == true) {
                           if ((widget.tipo!.contains('GUARDIA') ||
                               widget.tipo!.contains('SUPERVISOR'))) {
-                            Provider.of<AvisosController>(context,
+                            prov.Provider.of<AvisosController>(context,
                                     listen: false)
                                 .getTodosLosAvisos('', 'false');
                             Navigator.of(context).push(MaterialPageRoute(
@@ -2035,7 +2031,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           }
                         } else {
                           if ((widget.tipo!.contains('CLIENTE'))) {
-                            Provider.of<ConsignasController>(context,
+                            prov.Provider.of<ConsignasController>(context,
                                     listen: false)
                                 .getTodasLasConsignasClientes('', 'false');
                             Navigator.pushNamed(
@@ -2059,7 +2055,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     // HomeController ctrlHome,
     String titulo,
   ) {
-    return Consumer<HomeController>(
+    return prov.Consumer<HomeController>(
       builder: (_, ctrlHome, __) {
         return ExpansionTile(
           initiallyExpanded: true,
@@ -2105,7 +2101,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   alignment: WrapAlignment.center,
                   children: [
                     //==================================================//
-                    Consumer<BotonTurnoController>(builder:
+                    prov.Consumer<BotonTurnoController>(builder:
                         (BuildContext context, ctrlHome, Widget? child) {
                       return _itemsMenuLateral(
                         size,
@@ -2147,7 +2143,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         'ACTIVIDAD',
                       );
                     }),
-                    Consumer<BotonTurnoController>(builder:
+                    prov.Consumer<BotonTurnoController>(builder:
                         (BuildContext context, ctrlHome, Widget? child) {
                       return _itemsMenuLateral(
                         size,
@@ -2188,7 +2184,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         'INFORME',
                       );
                     }),
-                    Consumer<BotonTurnoController>(
+                    prov.Consumer<BotonTurnoController>(
                       builder: (BuildContext context, ctrlHome, Widget? child) {
                         return _itemsMenuLateral(
                           size,
@@ -2211,7 +2207,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 if ((widget.tipo!.contains('GUARDIA') ||
                                     widget.tipo!.contains('SUPERVISOR') ||
                                     widget.tipo!.contains('ADMIN'))) {
-                                  Provider.of<ConsignasController>(context,
+                                  prov.Provider.of<ConsignasController>(context,
                                           listen: false)
                                       .getTodasLasConsignasClientes(
                                           '', 'false');
@@ -2224,7 +2220,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 } else {}
                               } else {
                                 if ((widget.tipo!.contains('CLIENTE'))) {
-                                  Provider.of<ConsignasController>(context,
+                                  prov.Provider.of<ConsignasController>(context,
                                           listen: false)
                                       .getTodasLasConsignasClientes(
                                           '', 'false');
@@ -2337,7 +2333,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               } else {
                                 if ((widget.tipo!.contains('SUPERVISOR') ||
                                     widget.tipo!.contains('GUARDIA'))) {
-                                  Provider.of<CambioDePuestoController>(context,
+                                  prov.Provider.of<CambioDePuestoController>(
+                                          context,
                                           listen: false)
                                       .buscaCambioPuesto('', 'false');
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -2387,7 +2384,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           //************************//
 
                           final controllerAusencia =
-                              Provider.of<AusenciasController>(context,
+                              prov.Provider.of<AusenciasController>(context,
                                   listen: false);
                           controllerAusencia.buscaAusencias('', 'false');
 
@@ -2423,7 +2420,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     // HomeController ctrlHome,
     String titulo,
   ) {
-    return Consumer<BotonTurnoController>(
+    return prov.Consumer<BotonTurnoController>(
       builder: (_, ctrlHome, __) {
         return ExpansionTile(
           title: SizedBox(
@@ -2491,7 +2488,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   if ((widget.tipo!.contains('GUARDIA') ||
                                       widget.tipo!.contains('SUPERVISOR') ||
                                       widget.tipo!.contains('ADMIN'))) {
-                                    Provider.of<AvisosController>(context,
+                                    prov.Provider.of<AvisosController>(context,
                                             listen: false)
                                         .getTodosLosAvisos('', 'false');
                                     Navigator.of(context).push(MaterialPageRoute(
@@ -2500,7 +2497,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   }
                                 } else {
                                   if ((widget.tipo!.contains('CLIENTE'))) {
-                                    Provider.of<ConsignasController>(context,
+                                    prov.Provider.of<ConsignasController>(
+                                            context,
                                             listen: false)
                                         .getTodasLasConsignasClientes(
                                             '', 'false');
@@ -2893,7 +2891,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 // ****************** WIDGET DE BOTONES DELL MENU *************//
   Widget _itemsMenuLateral(Responsive size, String label, IconData icon,
       Color color, final VoidCallback onTap, String tipo) {
-    return Consumer<HomeController>(builder: (_, valueBotones, __) {
+    return prov.Consumer<HomeController>(builder: (_, valueBotones, __) {
       final ctrl = context.read<BotonTurnoController>();
       Map<String, dynamic> tipo = {};
       for (var item in valueBotones.getListaNotificacionesMenu) {
@@ -3199,11 +3197,12 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   //     );
   //   });
   // }
+
   Widget btnTurnoPrincipal(
     Responsive size,
     ThemeApp ctrl,
   ) {
-    return Consumer<BotonTurnoController>(
+    return prov.Consumer<BotonTurnoController>(
       builder: (_, valueTurno, __) {
         bool isTurnoActivo = valueTurno.getTurnoBTN;
 
@@ -3235,9 +3234,21 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 valueTurno.getTurnoBTN ? Colors.lightGreen : Colors.black45,
             onPressed: () {
               if (valueTurno.getTurnoBTN) {
-                _modalFinalizarTurno(size);
+                // _modalFinalizarTurno(size);
+                //=================================================//
+                final SessionParams paramsToLoad =
+                    SessionParams(widget.user!, valueTurno.getTurnoBTN);
+
+                _modalRelevo(ref);
+                ref.read(userProvider.notifier).state = paramsToLoad;
+                //=================================================//
               } else {
-                _modalInciaTurno(size);
+                if (widget.user!.rol!.contains('ADMINISTRACION')) {
+                  _modalInciaTurno(size);
+                } else {
+                  // NotificatiosnService.showSnackBarError(
+                  //     'No se pudo escanear ');
+                }
               }
             },
             child: Column(
@@ -3271,8 +3282,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   //=========================================================================//
 
   Widget btnTurno(Responsive size, Color color, HomeController ctrl) {
-    return Consumer<SocketService>(builder: (_, valueEstadoInternet, __) {
-      return Consumer<HomeController>(builder: (_, valueTurno, __) {
+    return prov.Consumer<SocketService>(builder: (_, valueEstadoInternet, __) {
+      return prov.Consumer<HomeController>(builder: (_, valueTurno, __) {
         return Container(
           width: size.iScreen(12.0),
           height: size.iScreen(12.0),
@@ -3583,7 +3594,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   // }
   //================================BOTON ALERTA ========================================//
   Widget btnAlerta(Responsive size) {
-    return Consumer<HomeController>(
+    return prov.Consumer<HomeController>(
       builder: (_, value, __) {
         return Container(
           // decoration: BoxDecoration(
@@ -3671,7 +3682,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 onPressed: value.alarmActivated == false
                     ? () {
                         value.activateAlarm(true);
-                        Provider.of<HomeController>(context, listen: false)
+                        prov.Provider.of<HomeController>(context, listen: false)
                             .enviaAlerta();
                       }
                     : null,
@@ -3764,7 +3775,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     ],
                   ),
                 ),
-                Consumer<HomeController>(
+                prov.Consumer<HomeController>(
                   builder: (_, valueScan, __) {
                     return Container(
                       padding:
@@ -3883,7 +3894,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          final homeControllers = Provider.of<HomeController>(context);
+          final homeControllers = prov.Provider.of<HomeController>(context);
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: AlertDialog(
@@ -4087,7 +4098,243 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     }
   }
 
-//************************************//
+//====================================MUESTRA MODAL RELEVO================================================//
+  //========================================================================================================//
+  void _modalRelevo(WidgetRef ref) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        final size = respRiv.Responsive.of(context);
+        // 1. Observa la lista de prendas para que la UI se actualice
+        final currentPrendas = ref.watch(prendasProvider);
+
+        // 2. Lee las funciones de actualización del notifier
+        final updatePrendaEstado =
+            ref.read(prendasProvider.notifier).updatePrendaEstado;
+        // --- ¡ASEGÚRATE DE QUE ESTA LÍNEA ESTÉ PRESENTE Y CORRECTA! ---
+        final updatePrendaObservacion =
+            ref.read(prendasProvider.notifier).updatePrendaObservacion;
+
+        final relevo = Relevo(
+          nombre: 'EDUARDO MARCELO MARTINEZ PINARGOTE ',
+          hora: '20:00',
+          cliente: 'Edificio Central S.A.',
+          puesto: 'Garita de Acceso 1',
+          prendas: listaDePrendasDelRelevo,
+        );
+
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: AlertDialog(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            ),
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: size.iScreen(0), vertical: size.iScreen(0)),
+            contentPadding: EdgeInsets.zero,
+            content: SizedBox(
+              width: size.wScreen(99),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: size.iScreen(2.0),
+                        vertical: size.iScreen(1.0)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('ENTREGA DE TURNO',
+                            style: GoogleFonts.roboto(
+                              fontSize: size.iScreen(2.0),
+                              fontWeight: FontWeight.bold,
+                            )),
+                        IconButton(
+                          splashRadius: size.iScreen(3.0),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.red,
+                            size: size.iScreen(3.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    child: PageView(
+                      children: [
+                        SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(2.0)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: size.wScreen(100),
+                                      child: Text('Persona relevo: ',
+                                          style: GoogleFonts.roboto(
+                                            fontSize: size.iScreen(1.9),
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.grey,
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      width: size.wScreen(100),
+                                      child: Text(relevo.nombre,
+                                          style: GoogleFonts.roboto(
+                                            fontSize: size.iScreen(2.0),
+                                            fontWeight: FontWeight.normal,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: size.iScreen(1.0)),
+                                Row(
+                                  children: [
+                                    Text('Hora: ',
+                                        style: GoogleFonts.roboto(
+                                          fontSize: size.iScreen(1.9),
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.grey,
+                                        )),
+                                    Text(' ${relevo.hora}',
+                                        style: GoogleFonts.roboto(
+                                          fontSize: size.iScreen(2.0),
+                                          fontWeight: FontWeight.normal,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: size.iScreen(1.0)),
+                                Row(
+                                  children: [
+                                    Text('Cliente: ',
+                                        style: GoogleFonts.roboto(
+                                          fontSize: size.iScreen(1.9),
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.grey,
+                                        )),
+                                    Text(' ${relevo.cliente}',
+                                        style: GoogleFonts.roboto(
+                                          fontSize: size.iScreen(2.0),
+                                          fontWeight: FontWeight.normal,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: size.iScreen(1.0)),
+                                Row(
+                                  children: [
+                                    Text('Puesto: ',
+                                        style: GoogleFonts.roboto(
+                                          fontSize: size.iScreen(1.9),
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.grey,
+                                        )),
+                                    Text(' ${relevo.puesto}',
+                                        style: GoogleFonts.roboto(
+                                          fontSize: size.iScreen(2.0),
+                                          fontWeight: FontWeight.normal,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: size.iScreen(1.0)),
+                                Container(
+                                  color: Colors.red,
+                                  width: size.wScreen(100),
+                                  height: size.iScreen(0.01),
+                                ),
+                                SizedBox(height: size.iScreen(1.0)),
+                                Text('Prendas Empresa:',
+                                    style: GoogleFonts.roboto(
+                                      fontSize: size.iScreen(1.9),
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey,
+                                    )),
+                                // --- SECCIÓN MODIFICADA: Ahora usa DataTable ---
+                                // --- SECCIÓN MODIFICADA: Ahora usa DataTable ---
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Colors.grey.shade300),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child:
+                                      //***********************************************/
+                                      PaginatedDataTable(
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('Detalle'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Cantidad'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Estado'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Observación'),
+                                      ),
+                                    ],
+                                    // **¡IMPORTANTE!** Aquí es donde pasas la instancia correcta de PrendaDataSource
+                                    source: PrendaDataSource(
+                                      relevo
+                                          .prendas, // Tus datos actuales de Riverpod
+                                      size,
+                                      updatePrendaEstado, // El callback para actualizar el estado
+                                      updatePrendaObservacion, // El callback para actualizar la observación
+                                      context, // El BuildContext necesario para la modal
+                                    ),
+                                    // header: const Text(
+                                    //     'Inventario de Prendas'), // Puedes agregar un encabezado
+
+                                    // Otras propiedades útiles:
+                                    // sortColumnIndex: 0,
+                                    // sortAscending: true,
+                                    // onPageChanged: (int page) { /* ... */ },
+                                    // onRowsPerPageChanged: (int? rows) { /* ... */ },
+
+                                    //***********************************************/
+                                  ),
+                                  //***********************************************/
+                                ),
+                                // --- FIN DE LA SECCIÓN MODIFICADA ---
+                                SizedBox(height: size.iScreen(1.0)),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            'Segunda pagina',
+                            style: GoogleFonts.roboto(
+                              fontSize: size.iScreen(3.0),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.iScreen(2.0),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+//****************MODAL DE MANTENIMIENTO ********************//
 
 // void _showMaintenanceAlert(BuildContext context) {
 //   final size=Responsive.of(context);
@@ -4565,7 +4812,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         content: SizedBox(
             height: size.hScreen(20.0),
             width: double.maxFinite,
-            child: Consumer<HomeController>(
+            child: prov.Consumer<HomeController>(
               builder: (_, value, __) {
                 return ListView.builder(
                   itemCount: value.getListaMeses.length,
