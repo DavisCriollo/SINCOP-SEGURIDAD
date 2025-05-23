@@ -647,6 +647,7 @@ class AusenciasController extends ChangeNotifier {
           _ausenciaEstadoDescripcion, // tomar el valor que llega de la api
       "ausTipoTurno": _tipoTurno
     };
+
     serviceSocket.socket!.emit('client:actualizarData', pyloadEditaAusencia);
   }
 

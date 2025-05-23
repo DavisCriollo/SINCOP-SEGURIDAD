@@ -62,3 +62,7 @@ final prendasProvider = StateNotifierProvider<PrendasNotifier, List<Prenda>>(
     (ref) => PrendasNotifier());
 
 final List<String> estadosDisponibles = ['Bueno', 'Regular', 'Malo'];
+
+
+  // final serviceSocket = SocketService();
+  //   serviceSocket.socket!.emit('client:actualizarData', pyloadEditaAusencia);

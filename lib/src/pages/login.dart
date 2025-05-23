@@ -82,273 +82,283 @@ class _LoginState extends State<Login> {
                   height: size.iScreen(100.0),
                   margin: EdgeInsets.only(
                       bottom: size.iScreen(0.0), top: size.iScreen(0.0)),
-                  child: SingleChildScrollView(
-                    physics: const ClampingScrollPhysics(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          // color: Colors.red,
-                          margin: EdgeInsets.only(
-                              bottom: size.iScreen(4.0),
-                              top: size.iScreen(4.0)),
-                          width: size.wScreen(35.0),
-                          child: Image.asset(
-                            'assets/imgs/Guardias.png',
+                  child: Center(
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            // color: Colors.red,
+                            margin: EdgeInsets.only(
+                                bottom: size.iScreen(4.0),
+                                top: size.iScreen(4.0)),
+                            width: size.wScreen(50.0),
+                            child: Image.asset(
+                              'assets/imgs/Guardias.png',
+                            ),
                           ),
-                        ),
 
-                        Form(
-                          key: controller.loginFormKey,
-                          child: Container(
-                            // color:Colors.red,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.iScreen(5.0)),
-                            margin: EdgeInsets.only(bottom: size.iScreen(1.0)),
-                            width: size.wScreen(100.0),
+                          Form(
+                            key: controller.loginFormKey,
+                            child: Container(
+                              // color:Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.iScreen(5.0)),
+                              margin:
+                                  EdgeInsets.only(bottom: size.iScreen(1.0)),
+                              width: size.wScreen(100.0),
 
-                            child: Column(
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    controller: _textEmpresa,
+                                    decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      labelText: 'Empresa',
+                                      suffixIcon: Icon(Icons.factory_outlined),
+                                    ),
+                                    inputFormatters: [
+                                      UpperCaseText(),
+                                    ],
+                                    textAlign: TextAlign.start,
+                                    onChanged: (text) {
+                                      controller.setLabelNombreEmpresa(text);
+                                    },
+                                    validator: (text) {
+                                      if (text!.trim().isNotEmpty) {
+                                        return null;
+                                      } else {
+                                        return 'Ingrese nombre de Empresa';
+                                      }
+                                    },
+                                    onSaved: (value) {
+                                      // codigo = value;
+                                      controller.setLabelNombreEmpresa(value!);
+                                    },
+                                  ),
+
+                                  //***********************************************/
+                                  SizedBox(
+                                    height: size.iScreen(2.0),
+                                  ),
+
+                                  //*****************************************/
+
+                                  TextFormField(
+                                    controller: _textUsuario,
+                                    decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      labelText: 'Usuario',
+                                      suffixIcon:
+                                          Icon(Icons.person_outline_outlined),
+                                    ),
+                                    textAlign: TextAlign.start,
+                                    onChanged: (text) {
+                                      controller.onChangeUser(text);
+                                    },
+                                    validator: (text) {
+                                      if (text!.trim().isNotEmpty) {
+                                        return null;
+                                      } else {
+                                        return 'Usuario Inválido';
+                                      }
+                                    },
+                                    onSaved: (value) {
+                                      controller.onChangeUser(value!);
+                                    },
+                                  ),
+
+                                  //***********************************************/
+                                  SizedBox(
+                                    height: size.iScreen(2.0),
+                                  ),
+                                  //*****************************************/
+                                  TextFormField(
+                                    controller: _textClave,
+                                    decoration: InputDecoration(
+                                      border: const UnderlineInputBorder(),
+                                      labelText: 'Clave',
+                                      suffixIcon: IconButton(
+                                          splashRadius: 5.0,
+                                          onPressed: () {
+                                            setState(() {
+                                              _obscureText = !_obscureText;
+                                            });
+                                          },
+                                          icon: _obscureText
+                                              ? const Icon(
+                                                  Icons.visibility_off_outlined)
+                                              : const Icon(Icons
+                                                  .remove_red_eye_outlined)),
+                                    ),
+                                    obscureText: _obscureText,
+                                    textAlign: TextAlign.start,
+                                    onChanged: (text) {
+                                      controller.onChangeClave(text);
+                                    },
+                                    validator: (text) {
+                                      if (text!.trim().isNotEmpty) {
+                                        return null;
+                                      } else {
+                                        return 'Ingrese su Clave';
+                                      }
+                                    },
+                                    onSaved: (value) {
+                                      controller.onChangeClave(value!);
+                                    },
+                                  ),
+
+                                  //***********************************************/
+                                ],
+                              ),
+                            ),
+                          ),
+                          //===========================================//
+                          Container(
+                            // color: Colors.red,
+                            width: size.wScreen(90.0),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(2.0)),
+
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                TextFormField(
-                                  controller: _textEmpresa,
-                                  decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: 'Empresa',
-                                    suffixIcon: Icon(Icons.factory_outlined),
+                                Container(
+                                  // color: Colors.blue,
+                                  margin: EdgeInsets.only(
+                                    top: size.iScreen(0.0),
+                                    bottom: size.iScreen(.0),
+                                    left: size.iScreen(0.0),
+                                    right: size.iScreen(4.0),
                                   ),
-                                  inputFormatters: [
-                                    UpperCaseText(),
-                                  ],
-                                  textAlign: TextAlign.start,
-                                  onChanged: (text) {
-                                    controller.setLabelNombreEmpresa(text);
-                                  },
-                                  validator: (text) {
-                                    if (text!.trim().isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return 'Ingrese nombre de Empresa';
-                                    }
-                                  },
-                                  onSaved: (value) {
-                                    // codigo = value;
-                                    controller.setLabelNombreEmpresa(value!);
-                                  },
-                                ),
-
-                                //***********************************************/
-                                SizedBox(
-                                  height: size.iScreen(2.0),
-                                ),
-
-                                //*****************************************/
-
-                                TextFormField(
-                                  controller: _textUsuario,
-                                  decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: 'Usuario',
-                                    suffixIcon:
-                                        Icon(Icons.person_outline_outlined),
+                                  padding: EdgeInsets.only(
+                                    top: size.iScreen(0.0),
+                                    bottom: size.iScreen(0.0),
+                                    left: size.iScreen(0.0),
+                                    right: size.iScreen(0.0),
                                   ),
-                                  textAlign: TextAlign.start,
-                                  onChanged: (text) {
-                                    controller.onChangeUser(text);
-                                  },
-                                  validator: (text) {
-                                    if (text!.trim().isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return 'Usuario Inválido';
-                                    }
-                                  },
-                                  onSaved: (value) {
-                                    controller.onChangeUser(value!);
-                                  },
+                                  //
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, 'password');
+                                    },
+                                    child: Text(
+                                      '¿Olvidé mi Clave?',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: size.iScreen(1.8),
+                                          fontWeight: FontWeight.bold,
+                                          color: primaryColor),
+                                    ),
+                                  ),
                                 ),
-
-                                //***********************************************/
-                                SizedBox(
-                                  height: size.iScreen(2.0),
-                                ),
-                                //*****************************************/
-                                TextFormField(
-                                  controller: _textClave,
-                                  decoration: InputDecoration(
-                                    border: const UnderlineInputBorder(),
-                                    labelText: 'Clave',
-                                    suffixIcon: IconButton(
-                                        splashRadius: 5.0,
-                                        onPressed: () {
-                                          setState(() {
-                                            _obscureText = !_obscureText;
-                                          });
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  margin: EdgeInsets.only(
+                                    top: size.iScreen(3.0),
+                                    bottom: size.iScreen(3.0),
+                                    left: size.iScreen(0.0),
+                                    right: size.iScreen(1.0),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Consumer<LoginController>(
+                                        builder: (_, provider, __) {
+                                          return Container(
+                                            // color: Colors.red,
+                                            child: Checkbox(
+                                                focusColor: Colors.white,
+                                                value: provider
+                                                    .getRecuerdaCredenciales,
+                                                onChanged: (value) {
+                                                  provider
+                                                      .onRecuerdaCredenciales(
+                                                          value!);
+                                                  // print(value);
+                                                }),
+                                          );
                                         },
-                                        icon: _obscureText
-                                            ? const Icon(
-                                                Icons.visibility_off_outlined)
-                                            : const Icon(
-                                                Icons.remove_red_eye_outlined)),
+                                      ),
+                                      Text(
+                                        'Recordarme',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: size.iScreen(1.8),
+                                            color: Colors.grey),
+                                      ),
+                                    ],
                                   ),
-                                  obscureText: _obscureText,
-                                  textAlign: TextAlign.start,
-                                  onChanged: (text) {
-                                    controller.onChangeClave(text);
-                                  },
-                                  validator: (text) {
-                                    if (text!.trim().isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return 'Ingrese su Clave';
-                                    }
-                                  },
-                                  onSaved: (value) {
-                                    controller.onChangeClave(value!);
-                                  },
                                 ),
-
-                                //***********************************************/
                               ],
                             ),
                           ),
-                        ),
-                        //===========================================//
-                        Container(
-                          // color: Colors.red,
-                          width: size.wScreen(90.0),
-                          margin: EdgeInsets.symmetric(
-                              horizontal: size.iScreen(2.0)),
 
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                // color: Colors.blue,
-                                margin: EdgeInsets.only(
-                                  top: size.iScreen(0.0),
-                                  bottom: size.iScreen(.0),
-                                  left: size.iScreen(0.0),
-                                  right: size.iScreen(4.0),
-                                ),
-                                padding: EdgeInsets.only(
-                                  top: size.iScreen(0.0),
-                                  bottom: size.iScreen(0.0),
-                                  left: size.iScreen(0.0),
-                                  right: size.iScreen(0.0),
-                                ),
-                                //
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, 'password');
-                                  },
-                                  child: Text(
-                                    '¿Olvidé mi Clave?',
-                                    style: GoogleFonts.roboto(
-                                        fontSize: size.iScreen(1.8),
-                                        fontWeight: FontWeight.bold,
-                                        color: primaryColor),
+                          //========================================//
+                          Consumer<LoginController>(
+                            builder: (context, controller, child) {
+                              return GestureDetector(
+                                onTap: () {
+                                  if (!controller.isLoading) {
+                                    _onSubmit(context, controller, size);
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: controller.isLoading
+                                        ? Colors.grey
+                                        : primaryColor,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: size.iScreen(5.0),
+                                    vertical: size.iScreen(3.0),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: size.iScreen(3.0),
+                                    vertical: size.iScreen(0.5),
+                                  ),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: size.iScreen(3.5),
+                                    width: size.iScreen(20.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        if (controller.isLoading) ...[
+                                          SizedBox(
+                                            height: size.iScreen(2.5),
+                                            width: size.iScreen(2.5),
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                              strokeWidth: 2.0,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              width: size.iScreen(
+                                                  1.0)), // Espacio entre el indicador y el texto
+                                        ],
+                                        Text(
+                                          controller.isLoading
+                                              ? 'Espera...'
+                                              : 'Entrar',
+                                          style: GoogleFonts.roboto(
+                                            fontSize: size.iScreen(2.0),
+                                            fontWeight: FontWeight.normal,
+                                            color: controller.isLoading
+                                                ? Colors.black
+                                                : Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerRight,
-                                margin: EdgeInsets.only(
-                                  top: size.iScreen(3.0),
-                                  bottom: size.iScreen(3.0),
-                                  left: size.iScreen(0.0),
-                                  right: size.iScreen(1.0),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Consumer<LoginController>(
-                                      builder: (_, provider, __) {
-                                        return Container(
-                                          // color: Colors.red,
-                                          child: Checkbox(
-                                              focusColor: Colors.white,
-                                              value: provider
-                                                  .getRecuerdaCredenciales,
-                                              onChanged: (value) {
-                                                provider.onRecuerdaCredenciales(
-                                                    value!);
-                                                // print(value);
-                                              }),
-                                        );
-                                      },
-                                    ),
-                                    Text(
-                                      'Recordarme',
-                                      style: GoogleFonts.roboto(
-                                          fontSize: size.iScreen(1.8),
-                                          color: Colors.grey),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              );
+                            },
                           ),
-                        ),
-    
-
-//========================================//
-Consumer<LoginController>(
-  builder: (context, controller, child) {
-    return GestureDetector(
-      onTap: () {
-        if (!controller.isLoading) {
-          _onSubmit(context, controller, size);
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: controller.isLoading ? Colors.grey : primaryColor,
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        margin: EdgeInsets.symmetric(
-          horizontal: size.iScreen(5.0),
-          vertical: size.iScreen(3.0),
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: size.iScreen(3.0),
-          vertical: size.iScreen(0.5),
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          height: size.iScreen(3.5),
-          width: size.iScreen(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (controller.isLoading) ...[
-                SizedBox(
-                  height: size.iScreen(2.5),
-                  width: size.iScreen(2.5),
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2.0,
-                  ),
-                ),
-                SizedBox(width: size.iScreen(1.0)), // Espacio entre el indicador y el texto
-              ],
-              Text(
-                controller.isLoading ? 'Espera...' : 'Entrar',
-                style: GoogleFonts.roboto(
-                  fontSize: size.iScreen(2.0),
-                  fontWeight: FontWeight.normal,
-                  color: controller.isLoading ? Colors.black : Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  },
-),
-//===========================================//
-
-
-                      ],
+                          //===========================================//
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -536,93 +546,90 @@ Consumer<LoginController>(
   //   }
   // }
 
-void _onSubmit(BuildContext contextResponsive, LoginController ctrllogin,
-    Responsive size) async {
-  final ctrlHome = context.read<HomeController>();
+  void _onSubmit(BuildContext contextResponsive, LoginController ctrllogin,
+      Responsive size) async {
+    final ctrlHome = context.read<HomeController>();
 
-  // Evita múltiples pulsaciones
-  if (ctrllogin.isLoading) return;
-  ctrllogin.isLoading = true;
+    // Evita múltiples pulsaciones
+    if (ctrllogin.isLoading) return;
+    ctrllogin.isLoading = true;
 
-  // Desactiva la alarma antes de iniciar el proceso de inicio de sesión
-  ctrlHome.activateAlarm(false);
+    // Desactiva la alarma antes de iniciar el proceso de inicio de sesión
+    ctrlHome.activateAlarm(false);
 
-  // Valida el formulario
-  final isValid = ctrllogin.validateForm();
-  ctrllogin.loginFormKey.currentState?.save();
-  if (!isValid) {
-    ctrllogin.isLoading = false;
-    return;
-  }
-
-  print('Formulario validado.');
-
-  // Verifica la conexión a Internet
-  final conexion = await Connectivity().checkConnectivity();
-  print('Estado de conectividad: $conexion');
-
-  if (ctrllogin.getlNombreEmpresa == null) {
-    NotificatiosnService.showSnackBarError('Seleccione Empresa');
-    ctrllogin.isLoading = false;
-    return;
-  } else if (conexion == ConnectivityResult.none) {
-    NotificatiosnService.showSnackBarError('SIN CONEXION A INTERNET');
-    ctrllogin.isLoading = false;
-    return;
-  }
-
-  // Solicita el permiso de ubicación
-  final status = await Permission.location.request();
-  print('Permiso de ubicación: $status');
-
-  if (status == PermissionStatus.granted) {
-    // Obtén la posición actual
-    await ctrlHome.getCurrentPosition();
-
-    // Asegúrate de que el widget sigue activo y de que se obtuvieron las coordenadas
-    if (!mounted || ctrlHome.getCoords!.isEmpty) {
+    // Valida el formulario
+    final isValid = ctrllogin.validateForm();
+    ctrllogin.loginFormKey.currentState?.save();
+    if (!isValid) {
       ctrllogin.isLoading = false;
       return;
     }
 
-    // Muestra un diálogo de progreso
-    ProgressDialog.show(context);
-    print('Mostrando ProgressDialog.');
+    print('Formulario validado.');
 
-    // Realiza el inicio de sesión
-    final response = await ctrllogin.loginApp(context);
+    // Verifica la conexión a Internet
+    final conexion = await Connectivity().checkConnectivity();
+    print('Estado de conectividad: $conexion');
 
-    if (mounted) {
-      // Oculta el ProgressDialog
-      ProgressDialog.dissmiss(context);
-      print('Ocultando ProgressDialog.');
+    if (ctrllogin.getlNombreEmpresa == null) {
+      NotificatiosnService.showSnackBarError('Seleccione Empresa');
+      ctrllogin.isLoading = false;
+      return;
+    } else if (conexion == ConnectivityResult.none) {
+      NotificatiosnService.showSnackBarError('SIN CONEXION A INTERNET');
+      ctrllogin.isLoading = false;
+      return;
+    }
 
-      if (response != null) {
-        // Si la respuesta es válida, navega a la página SplashPage
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const SplashPage()));
-          }
-        });
-      } else {
-        NotificatiosnService.showSnackBarError(
-            'Error de conexión con el servidor');
+    // Solicita el permiso de ubicación
+    final status = await Permission.location.request();
+    print('Permiso de ubicación: $status');
+
+    if (status == PermissionStatus.granted) {
+      // Obtén la posición actual
+      await ctrlHome.getCurrentPosition();
+
+      // Asegúrate de que el widget sigue activo y de que se obtuvieron las coordenadas
+      if (!mounted || ctrlHome.getCoords!.isEmpty) {
+        ctrllogin.isLoading = false;
+        return;
+      }
+
+      // Muestra un diálogo de progreso
+      ProgressDialog.show(context);
+      print('Mostrando ProgressDialog.');
+
+      // Realiza el inicio de sesión
+      final response = await ctrllogin.loginApp(context);
+
+      if (mounted) {
+        // Oculta el ProgressDialog
+        ProgressDialog.dissmiss(context);
+        print('Ocultando ProgressDialog.');
+
+        if (response != null) {
+          // Si la respuesta es válida, navega a la página SplashPage
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const SplashPage()));
+            }
+          });
+        } else {
+          NotificatiosnService.showSnackBarError(
+              'Error de conexión con el servidor');
+        }
+      }
+    } else {
+      // Si no se concede el permiso de ubicación, navega a la página de activación de GPS
+      if (mounted) {
+        Navigator.pushNamed(context, 'gps');
       }
     }
-  } else {
-    // Si no se concede el permiso de ubicación, navega a la página de activación de GPS
-    if (mounted) {
-      Navigator.pushNamed(context, 'gps');
-    }
+
+    // Restablece el estado de isLoading
+    ctrllogin.isLoading = false;
   }
-
-  // Restablece el estado de isLoading
-  ctrllogin.isLoading = false;
-}
-
-
-
 }

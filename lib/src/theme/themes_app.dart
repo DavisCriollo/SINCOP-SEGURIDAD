@@ -1,5 +1,6 @@
 //========================================//
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // import 'package:neitor_vet/src/utils/responsive.dart';
 // import 'package:neitor_vet/src/utils/theme.dart';
@@ -288,6 +289,7 @@ class ThemeApp with ChangeNotifier {
         primary: _primaryColor,
         secondary: _secondaryColor,
       ),
+      textTheme: GoogleFonts.robotoTextTheme(),
     );
   }
 
