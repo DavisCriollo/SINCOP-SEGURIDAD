@@ -2791,57 +2791,11 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
 
                     //===================================BOTON BITACORA==========================================//
 
-                    // _itemsMenuLateral(
-                    //   size,
-                    //   widget.user!.rol!.contains('RESIDENTE')
-                    //       ? 'Solicitud de Ingreso'
-                    //       : 'Bitácora',
-                    //   Icons.auto_stories_sharp,
-                    //   ctrlTheme.combinedColors[1],
-                    //   () async {
-                    //     bool isGpsEnabled = await context
-                    //         .read<HomeController>()
-                    //         .checkGpsStatus();
-                    //     if (!isGpsEnabled) {
-                    //       Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (context) => const AccesoGPSPage()),
-                    //       );
-                    //     } else {
-                    //       final ctrl = context.read<BotonTurnoController>();
-
-                    //       if (ctrl.getTurnoBTN == true ||
-                    //           !widget.user!.rol!.contains('RESIDENTE')) {
-                    //         final controller =
-                    //             context.read<BitacoraController>();
-                    //         controller.resetValuesBitacora();
-
-                    //         // _controller.getBitacoras('', 'false'); ///*********este es el principal  */
-                    //         controller.setBtnSearch(false);
-
-                    //         controller.setingresoSalida(0);
-                    //         controller.getAllVisitasBitacoras(
-                    //             '', 'false', 'INGRESO');
-                    //         controller.onInputFechaInicioChange('');
-                    //         controller.onInputFechaFinChange('');
-
-                    //         Navigator.of(context).push(MaterialPageRoute(
-                    //             builder: (context) => ListaBitacora(
-                    //                   user: widget.user,
-                    //                 )));
-                    //       } else {
-                    //         NotificatiosnService.showSnackBarDanger(
-                    //             'DEBE INICIAR TURNO');
-                    //       }
-                    //     }
-                    //   },
-                    //   'RESIDENTE',
-                    // ),
-
                     _itemsMenuLateral(
                       size,
-                      'Bitácora',
+                      widget.user!.rol!.contains('RESIDENTE')
+                          ? 'Solicitud de Ingreso'
+                          : 'Bitácora',
                       Icons.auto_stories_sharp,
                       ctrlTheme.combinedColors[1],
                       () async {
@@ -2862,17 +2816,20 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
                             final controller =
                                 context.read<BitacoraController>();
                             controller.resetValuesBitacora();
+
+                            // _controller.getBitacoras('', 'false'); ///*********este es el principal  */
                             controller.setBtnSearch(false);
+
                             controller.setingresoSalida(0);
                             controller.getAllVisitasBitacoras(
                                 '', 'false', 'INGRESO');
                             controller.onInputFechaInicioChange('');
                             controller.onInputFechaFinChange('');
 
-                            //======================================//
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => BitacorasScreens()));
-                            //======================================//
+                                builder: (context) => ListaBitacora(
+                                      user: widget.user,
+                                    )));
                           } else {
                             NotificatiosnService.showSnackBarDanger(
                                 'DEBE INICIAR TURNO');
@@ -2881,6 +2838,49 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
                       },
                       'RESIDENTE',
                     ),
+
+                    // _itemsMenuLateral(
+                    //   size,
+                    //   'Bitácora',
+                    //   Icons.auto_stories_sharp,
+                    //   ctrlTheme.combinedColors[1],
+                    //   () async {
+                    //     bool isGpsEnabled = await context
+                    //         .read<HomeController>()
+                    //         .checkGpsStatus();
+                    //     if (!isGpsEnabled) {
+                    //       Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => const AccesoGPSPage()),
+                    //       );
+                    //     } else {
+                    //       final ctrl = context.read<BotonTurnoController>();
+
+                    //       if (ctrl.getTurnoBTN == true ||
+                    //           !widget.user!.rol!.contains('RESIDENTE')) {
+                    //         final controller =
+                    //             context.read<BitacoraController>();
+                    //         controller.resetValuesBitacora();
+                    //         controller.setBtnSearch(false);
+                    //         controller.setingresoSalida(0);
+                    //         controller.getAllVisitasBitacoras(
+                    //             '', 'false', 'INGRESO');
+                    //         controller.onInputFechaInicioChange('');
+                    //         controller.onInputFechaFinChange('');
+
+                    //         //======================================//
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) => BitacorasScreens()));
+                    //         //======================================//
+                    //       } else {
+                    //         NotificatiosnService.showSnackBarDanger(
+                    //             'DEBE INICIAR TURNO');
+                    //       }
+                    //     }
+                    //   },
+                    //   'RESIDENTE',
+                    // ),
 
                     //*************BOTON CIERRE BITACOTA**************//
                     _itemsMenuLateral(
@@ -3278,11 +3278,11 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
               if (valueTurno.getTurnoBTN) {
                 _modalFinalizarTurno(size);
                 //=================================================//
-                final SessionParams paramsToLoad =
-                    SessionParams(widget.user!, valueTurno.getTurnoBTN);
+                // final SessionParams paramsToLoad =
+                //     SessionParams(widget.user!, valueTurno.getTurnoBTN);
 
-                _modalRelevo(ref);
-                ref.read(userProvider.notifier).state = paramsToLoad;
+                // _modalRelevo(ref);
+                // ref.read(userProvider.notifier).state = paramsToLoad;
                 //=================================================//
               } else {
                 if (widget.user!.rol!.contains('ADMINISTRACION')) {
