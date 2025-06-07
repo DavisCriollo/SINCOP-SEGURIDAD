@@ -13,6 +13,8 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:nseguridad/features/shared/provider/map_home_provider.dart';
 import 'package:nseguridad/src/api/authentication_client.dart';
 import 'package:nseguridad/src/controllers/actividades_asignadas_controller.dart';
 import 'package:nseguridad/src/controllers/ausencias_controller.dart';
@@ -807,7 +809,7 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 1.0.8',
+              'Ver: 1.1.1',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,
@@ -1138,7 +1140,7 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
                           horizontal: size.iScreen(2.0),
                           vertical: size.iScreen(0.0)),
                       child: Text(
-                        'Versión. 1.0.8',
+                        'Versión. 1.1.0',
                         style: GoogleFonts.roboto(
                             fontSize: size.iScreen(1.6),
                             color: Colors.black87,
@@ -1758,22 +1760,27 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
         // infoMantenimiento(size) ,//////   AQUI MOSTRAR BANNER IINIFORMATIVO
 
         Container(
-          margin: EdgeInsets.symmetric(
-              vertical: size.iScreen(2.0), horizontal: size.iScreen(2.0)),
-          // color: Colors.red,
-          width: size.wScreen(100.0),
-          height: size.hScreen(40.0),
+            margin: EdgeInsets.symmetric(
+                vertical: size.iScreen(2.0), horizontal: size.iScreen(2.0)),
+            // color: Colors.red,
+            width: size.wScreen(100.0),
+            height: size.hScreen(40.0),
+            alignment: Alignment.center,
+            child:
+                //==================================================//
+                MapScreen()
 
-          alignment: Alignment.center,
-          child: Text(
-            'Sistema integrado de seguridad,',
-            style: GoogleFonts.roboto(
-              fontSize: size.iScreen(2.0),
-              color: Colors.grey,
-              fontWeight: FontWeight.bold,
+            //==================================================//
+            // Text(
+            //   'Sistema integrado de seguridad',
+            //   style: GoogleFonts.roboto(
+            //     fontSize: size.iScreen(2.0),
+            //     color: Colors.grey,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
+            //==================================================//
             ),
-          ),
-        ),
         //                 ],
         //               )),
         //     ),
@@ -3285,12 +3292,12 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
                 // ref.read(userProvider.notifier).state = paramsToLoad;
                 //=================================================//
               } else {
-                if (widget.user!.rol!.contains('ADMINISTRACION')) {
-                  _modalInciaTurno(size);
-                } else {
-                  // NotificatiosnService.showSnackBarError(
-                  //     'No se pudo escanear ');
-                }
+                // if (widget.user!.rol!.contains('ADMINISTRACION')) {
+                _modalInciaTurno(size);
+                // } else {
+                //   // NotificatiosnService.showSnackBarError(
+                //   //     'No se pudo escanear ');
+                // }
               }
             },
             child: Column(
@@ -5290,3 +5297,130 @@ class _ItemsSocials extends StatelessWidget {
     );
   }
 }
+
+//================================MAPA====================================//
+// Tu archivo map_feature_providers.dart (o el que contenga MapScreen)
+
+// ... (todas tus definiciones de MapState, MapNotifier, GpsStatusNotifier y sus providers) ...
+
+//==============================================================================
+// 3. WIDGET DE EJEMPLO PARA LA UI
+//==============================================================================
+
+//==============================================================================
+// 3. WIDGET DE EJEMPLO PARA LA UI (MapScreen)
+//==============================================================================
+
+/// **`MapScreen`**: El widget principal que muestra el mapa y gestiona la interacción.
+class MapScreen extends ConsumerWidget {
+  const MapScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mapState = ref.watch(mapNotifierProvider);
+    final isGpsEnabled = ref.watch(isGpsEnabledProvider);
+    final isPermissionGranted = ref.watch(isPermissionGrantedProvider);
+
+    final gpsNotifier = ref.read(gpsStatusNotifierProvider.notifier);
+    final mapNotifier = ref.read(mapNotifierProvider.notifier);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      gpsNotifier.checkGpsStatus();
+      gpsNotifier.checkAndRequestPermission();
+    });
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          // 1. Base del Mapa o Spinner Inicial
+          // Siempre renderiza GoogleMap si tenemos una ubicación inicial.
+          // El spinner de carga se manejará como un overlay encima.
+          if (mapState.currentLocation != null)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: mapState
+                        .currentLocation!, // Usa la ubicación actual del estado
+                    zoom: 15,
+                  ),
+                  onMapCreated: (controller) {
+                    mapNotifier.setMapController(controller);
+                  },
+                  myLocationEnabled: true,
+                  // myLocationButtonEnabled: false,
+                ),
+              ),
+            )
+          else
+            // Si AÚN no hay una ubicación inicial, muestra un spinner de pantalla completa
+            const Center(child: CircularProgressIndicator()),
+
+          // 2. Overlay de Carga (aparece encima del mapa si ya existe)
+          if (mapState.isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5), // Fondo semi-transparente
+              child: const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+            )
+          // 3. Overlay de Mensaje de Error (si existe un error, en lugar del de carga)
+          else if (mapState.errorMessage != null)
+            Container(
+              color: Colors.black.withOpacity(0.7),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                mapState.errorMessage!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+
+          // 4. Botón Flotante para Ubicación
+          // Positioned(
+          //   bottom: 20,
+          //   right: 20,
+          //   child: FloatingActionButton(
+          //     onPressed: () {
+          //       // Evita llamadas repetidas si ya está cargando
+          //       if (!mapState.isLoading) {
+          //         mapNotifier.fetchCurrentLocation();
+          //       }
+          //     },
+          //     child: mapState.isLoading
+          //         ? const CircularProgressIndicator(
+          //             color: Colors.white, strokeWidth: 2)
+          //         : const Icon(Icons.my_location),
+          //   ),
+          // ),
+
+          // 5. Tarjeta de Estado de GPS y Permisos
+          // Positioned(
+          //   top: 10,
+          //   left: 10,
+          //   child: Card(
+          //     elevation: 4,
+          //     child: Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: Column(
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           Text('GPS Habilitado: ${isGpsEnabled ? 'Sí' : 'No'}'),
+          //           Text(
+          //               'Permiso Otorgado: ${isPermissionGranted ? 'Sí' : 'No'}'),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
+        ], // <-- Asegúrate de que este sea el final de la lista de children
+      ),
+    );
+  }
+}
+
+//====================================================================//
