@@ -43,10 +43,10 @@
         android:label="Sincop"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-
-
+        <!-- A      AIzaSyAGCPlDGid7pIumJ_2UxA2fxlEMHfeiQwM -->
+      <!--I      AIzaSyB0_njun270mNMSbjj7z96Ud3rUelgjowY -->
        <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyAGCPlDGid7pIumJ_2UxA2fxlEMHfeiQwM"/>
+               android:value="AIzaSyCGm_4Ip6JxsW4lFIRiXvYWu_ia-nQ9yOg"/>
 
         <activity
             android:name=".MainActivity"

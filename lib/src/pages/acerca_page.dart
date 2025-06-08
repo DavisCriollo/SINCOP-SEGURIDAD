@@ -64,7 +64,7 @@ class AcercaDePage extends StatelessWidget {
                             horizontal: size.iScreen(2.0),
                             vertical: size.iScreen(0.0)),
                         child: Text(
-                          'Versión. 1.1.1',
+                          'Versión. 1.1.2',
                           style: GoogleFonts.lexendDeca(
                               fontSize: size.iScreen(1.6),
                               color: Colors.black87,

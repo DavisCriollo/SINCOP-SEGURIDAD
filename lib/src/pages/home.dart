@@ -809,7 +809,7 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 1.1.1',
+              'Ver: 1.1.2',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,
@@ -1140,7 +1140,7 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
                           horizontal: size.iScreen(2.0),
                           vertical: size.iScreen(0.0)),
                       child: Text(
-                        'Versión. 1.1.0',
+                        'Versión: 1.1.2',
                         style: GoogleFonts.roboto(
                             fontSize: size.iScreen(1.6),
                             color: Colors.black87,
@@ -2475,51 +2475,51 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
                   alignment: WrapAlignment.center,
                   children: [
                     //====================COMUNICADOS=======================//
-                    widget.tipo!.contains('GUARDIA')
-                        ? Container()
-                        : _itemsMenuLateral(
-                            size,
-                            'Comunicados',
-                            Icons.list_alt,
-                            ctrlTheme.combinedColors[3],
-                            () async {
-                              bool isGpsEnabled = await context
-                                  .read<HomeController>()
-                                  .checkGpsStatus();
-                              if (!isGpsEnabled) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AccesoGPSPage()),
-                                );
-                              } else {
-                                if (ctrlHome.getTurnoBTN == true) {
-                                  if ((widget.tipo!.contains('GUARDIA') ||
-                                      widget.tipo!.contains('SUPERVISOR') ||
-                                      widget.tipo!.contains('ADMIN'))) {
-                                    prov.Provider.of<AvisosController>(context,
-                                            listen: false)
-                                        .getTodosLosAvisos('', 'false');
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ListaComunicadosGuardiasPage()));
-                                  }
-                                } else {
-                                  if ((widget.tipo!.contains('CLIENTE'))) {
-                                    prov.Provider.of<ConsignasController>(
-                                            context,
-                                            listen: false)
-                                        .getTodasLasConsignasClientes(
-                                            '', 'false');
-                                    Navigator.pushNamed(
-                                        context, 'listaConsignasClientes');
-                                  }
-                                }
-                              }
-                            },
-                            'COMUNICADO',
-                          ),
+                    // widget.tipo!.contains('GUARDIA')
+                    //     ? Container()
+                    //     : _itemsMenuLateral(
+                    //         size,
+                    //         'Comunicados',
+                    //         Icons.list_alt,
+                    //         ctrlTheme.combinedColors[3],
+                    //         () async {
+                    //           bool isGpsEnabled = await context
+                    //               .read<HomeController>()
+                    //               .checkGpsStatus();
+                    //           if (!isGpsEnabled) {
+                    //             Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (context) =>
+                    //                       const AccesoGPSPage()),
+                    //             );
+                    //           } else {
+                    //             if (ctrlHome.getTurnoBTN == true) {
+                    //               if ((widget.tipo!.contains('GUARDIA') ||
+                    //                   widget.tipo!.contains('SUPERVISOR') ||
+                    //                   widget.tipo!.contains('ADMIN'))) {
+                    //                 prov.Provider.of<AvisosController>(context,
+                    //                         listen: false)
+                    //                     .getTodosLosAvisos('', 'false');
+                    //                 Navigator.of(context).push(MaterialPageRoute(
+                    //                     builder: (context) =>
+                    //                         const ListaComunicadosGuardiasPage()));
+                    //               }
+                    //             } else {
+                    //               if ((widget.tipo!.contains('CLIENTE'))) {
+                    //                 prov.Provider.of<ConsignasController>(
+                    //                         context,
+                    //                         listen: false)
+                    //                     .getTodasLasConsignasClientes(
+                    //                         '', 'false');
+                    //                 Navigator.pushNamed(
+                    //                     context, 'listaConsignasClientes');
+                    //               }
+                    //             }
+                    //           }
+                    //         },
+                    //         'COMUNICADO',
+                    //       ),
                     // _itemsMenuLateral(size, 'Reportes', Icons.feed_outlined, ctrlHome,
                     //     ctrlTheme.combinedColors[0], () {
                     //   _modalReportes(context, size, widget.user);
@@ -5345,7 +5345,7 @@ class MapScreen extends ConsumerWidget {
                   initialCameraPosition: CameraPosition(
                     target: mapState
                         .currentLocation!, // Usa la ubicación actual del estado
-                    zoom: 15,
+                    zoom: 18,
                   ),
                   onMapCreated: (controller) {
                     mapNotifier.setMapController(controller);
