@@ -809,7 +809,7 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 1.1.2',
+              'Ver: 2.0.0',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,
@@ -1140,7 +1140,7 @@ class HomeState extends ConsumerState<Home> with WidgetsBindingObserver {
                           horizontal: size.iScreen(2.0),
                           vertical: size.iScreen(0.0)),
                       child: Text(
-                        'Versión: 1.1.2',
+                        '2.0.0',
                         style: GoogleFonts.roboto(
                             fontSize: size.iScreen(1.6),
                             color: Colors.black87,
